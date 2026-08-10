@@ -53,7 +53,7 @@ When reviewing a PR, format your review output strictly as follows:
 
 **Reviewer Model**: Claude / Opus 4.6  
 **PR Title**: [PR Title]  
-**Target Branch**: `main`  
+**Target Branch**: `master`  
 **Author Agent**: [Frontend / Backend / QA Agent]  
 
 ---

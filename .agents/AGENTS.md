@@ -23,21 +23,21 @@ Welcome to the full-stack development environment. This document defines the cor
 
 ## 🔄 Agent Task Lifecycle & Workflow Conventions
 
-Every task assigned to a worker sub-agent MUST strictly adhere to the following 6-step pipeline:
+Every task assigned to a worker sub-agent MUST strictly adhere to the following 7-step remote pipeline:
 
 ```mermaid
 flowchart LR
-    A[1. User Request] --> B[2. Create Branch]
+    A[1. User Request] --> B[2. Create Local Branch]
     B --> C[3. Implement Code Gemini 3.6]
     C --> D[4. Run Tests yarn test]
-    D --> E[5. Create PR & Commit]
+    D --> E[5. Commit & Push Remote Branch]
     E --> F[6. Code Review Opus 4.6]
-    F -->|Approved| G[Merge to main]
+    F -->|Approved| G[7. Merge & Push master to Remote]
     F -->|Changes Requested| C
 ```
 
 ### Step 1: Task Initialization & Unique Branch Creation
-- Worker agents MUST NOT write code directly on `main`.
+- Worker agents MUST NOT write code directly on `master`.
 - Create a dedicated feature branch using naming convention:
   - `feature/frontend-<slug>` for client-side features
   - `feature/backend-<slug>` for backend features
@@ -56,9 +56,13 @@ flowchart LR
   ```
 - No task is complete without passing test verification.
 
-### Step 4: Git Commit & Pull Request (PR) Creation
+### Step 4: Commit & Push Task Branch to Remote Repository
 - Commit changes using conventional commit formats (`feat: description`, `fix: description`, `refactor: description`).
-- Create Pull Request description utilizing the template at `.agents/templates/pr_template.md`.
+- **Push the task branch to the remote repository**:
+  ```bash
+  git push -u origin <branch-name>
+  ```
+- Create Pull Request description utilizing the template at `.agents/templates/pr_template.md` targeting `master`.
 
 ### Step 5: Code Review by Code Reviewer Agent (Opus 4.6)
 - The Pull Request is inspected by the **Code-Reviewer Agent** (powered by **Opus 4.6**).
@@ -67,9 +71,16 @@ flowchart LR
   2. **Security & Data Safety**: User cookie safety, JWT handling, input sanitization.
   3. **Architecture & Design**: Modular structure, custom hooks usage, no monolithic files.
   4. **Performance & Styling**: Pure SCSS modules, no inline styles, optimized queries.
+
+### Step 6 & 7: Approval, Merge & Remote Master Push
 - Review outcomes:
-  - **`APPROVED`**: Ready for merge into `main`.
-  - **`CHANGES_REQUESTED`**: Worker agent returns to Step 3, resolves feedback, and re-submits.
+  - **`APPROVED`**: Merge the feature branch into `master`, then **push updated `master` to remote**:
+    ```bash
+    git checkout master
+    git merge <branch-name>
+    git push origin master
+    ```
+  - **`CHANGES_REQUESTED`**: Worker agent resolves feedback on task branch, re-runs tests, pushes updated task branch (`git push`), and re-submits for review.
 
 ---
 

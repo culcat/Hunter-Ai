@@ -36,15 +36,24 @@ When receiving a complex feature or bug fix request:
   ```
 - If tests fail, send logs back to the worker sub-agent for fixing before proceeding.
 
-### 5. Git Commit & PR Creation
+### 5. Git Commit, Remote Branch Push & PR Creation
 - Generate a clean commit with conventional format (`feat: <description>`).
-- Format Pull Request using `.agents/templates/pr_template.md`.
+- Push task branch to remote repository:
+  ```bash
+  git push -u origin <branch-name>
+  ```
+- Format Pull Request targeting `master` using `.agents/templates/pr_template.md`.
 
-### 6. Code Review Handoff (Opus 4.6)
+### 6. Code Review Handoff (Opus 4.6) & Remote Master Push
 - Dispatch the Pull Request and diff to **Code-Reviewer Agent (Opus 4.6)**.
 - Handle review outcome:
-  - **`APPROVED`**: Proceed to merge into `main`.
-  - **`CHANGES_REQUESTED`**: Send review feedback to worker agent for resolution, re-run tests, and re-submit.
+  - **`APPROVED`**: Merge branch into `master`, then push updated `master` to remote origin:
+    ```bash
+    git checkout master
+    git merge <branch-name>
+    git push origin master
+    ```
+  - **`CHANGES_REQUESTED`**: Send review feedback to worker agent for resolution, re-run tests, push updated task branch (`git push`), and re-submit.
 
 ---
 
@@ -54,6 +63,7 @@ When receiving a complex feature or bug fix request:
 - [ ] Dedicated feature branch created for each task.
 - [ ] Code implemented by Gemini 3.6 worker agents.
 - [ ] Monorepo build, lint, and test suites executed (`yarn type-check`, `yarn lint`, `yarn test`).
-- [ ] PR created with `.agents/templates/pr_template.md`.
+- [ ] Task branch pushed to remote origin (`git push -u origin <branch-name>`).
+- [ ] PR created with `.agents/templates/pr_template.md` targeting `master`.
 - [ ] Code review completed by Opus 4.6 Code-Reviewer Agent.
-- [ ] Branch merged clean after approval.
+- [ ] Branch merged clean into `master` and pushed to remote origin (`git push origin master`).

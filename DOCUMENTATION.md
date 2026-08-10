@@ -133,7 +133,7 @@ The workspace features a multi-agent AI architecture managed via configuration g
 
 | Agent Role | Skill Location | Base Model | Responsibility Domain | Git Branch Pattern |
 | :--- | :--- | :--- | :--- | :--- |
-| **Orchestrator Agent** | `.agents/skills/agent-orchestrator` | **Gemini 3.6** | Multi-task decomposition, pipeline tracking, PR creation & handoff | `main` / management |
+| **Orchestrator Agent** | `.agents/skills/agent-orchestrator` | **Gemini 3.6** | Multi-task decomposition, pipeline tracking, PR creation & handoff | `master` / management |
 | **Frontend Agent** | `.agents/skills/frontend-next-antd` | **Gemini 3.6** | Next.js 15 App Router, React 19, Ant Design, RTK Query, SCSS Modules | `feature/frontend-<task>` |
 | **Backend Agent** | `.agents/skills/backend-nest-sqlite-typeorm` | **Gemini 3.6** | NestJS modules, TypeORM entities, SQLite schema, Playwright scrapers, DTOs | `feature/backend-<task>` |
 | **QA / Tester Agent** | `.agents/skills/qa-testing` | **Gemini 3.6** | Unit tests (Jest), component tests, Playwright scraper verification | `test/<task>` |
@@ -141,9 +141,9 @@ The workspace features a multi-agent AI architecture managed via configuration g
 
 ---
 
-### 2. Task Lifecycle & Automated Pipeline
+### 2. Task Lifecycle & Remote Pipeline
 
-Every task executed by worker sub-agents follows an automated 5-phase pipeline:
+Every task executed by worker sub-agents follows an automated remote pipeline:
 
 ```
 [Task Request] 
@@ -158,10 +158,13 @@ Every task executed by worker sub-agents follows an automated 5-phase pipeline:
 3. Verification Suite ───► yarn type-check && yarn lint && yarn test
       │
       ▼
-4. PR & Commit ──────────► .agents/templates/pr_template.md
+4. Remote Push & PR ─────► git push -u origin <branch-name> (.agents/templates/pr_template.md)
       │
       ▼
 5. Code Review Gate ─────► Opus 4.6 Code-Reviewer Agent (APPROVED / CHANGES_REQUESTED)
+      │
+      ▼
+6. Remote Master Push ───► git checkout master && git merge <branch> && git push origin master
 ```
 
 ---
@@ -170,5 +173,5 @@ Every task executed by worker sub-agents follows an automated 5-phase pipeline:
 - **Strict TypeScript**: 0 tolerance for `any` or untyped props. All shared models live in `@hunter-ai/types`.
 - **SCSS Modules Only**: Inline React `style={{ ... }}` is strictly prohibited.
 - **DTO Validation**: All NestJS controllers require `class-validator` decorated DTOs.
-- **Clean Branch Strategy**: No agent writes code directly on `main`.
-
+- **Clean Branch Strategy**: No agent writes code directly on `master`.
+- **Remote Synchronization**: Task branches must be pushed to remote origin before PR review, and `master` must be pushed to remote origin after merging.
