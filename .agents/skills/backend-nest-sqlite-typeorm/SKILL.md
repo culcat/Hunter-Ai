@@ -3,11 +3,19 @@ name: backend-nest-sqlite-typeorm
 description: Architecture rules, TypeORM SQLite database mappings, DTO validation, and API development guidelines for Backend development using NestJS, TypeScript, SQLite, and TypeORM.
 ---
 
-# Backend Agent Skill: NestJS + TypeScript + SQLite + TypeORM
+# Backend Agent Skill: NestJS + TypeORM + SQLite (Model: Gemini 3.6)
 
-This skill governs all backend server application development. Follow these guidelines and architectural patterns when creating or modifying NestJS services, database entities, controllers, and APIs.
+This skill governs all backend server application development (`apps/api`). As a worker sub-agent operating on **Gemini 3.6**, you MUST follow strict NestJS architecture standards, create dedicated git feature branches (`feature/backend-<task-name>`), execute automated tests (`yarn test`, `yarn lint`, `yarn type-check`), and submit Pull Requests for review by the **Code-Reviewer Agent (Opus 4.6)**.
 
 ---
+
+## 🔄 Sub-Agent Execution Pipeline
+
+1. **Branch Creation**: Create a unique task branch before modifying code: `git checkout -b feature/backend-<task-name>`.
+2. **Implementation**: Implement NestJS modules, TypeORM SQLite entities, Playwright scrapers, DTOs, and controllers.
+3. **Verification**: Run `yarn workspace @hunter-ai/api test` and `yarn type-check` to verify code correctness.
+4. **Pull Request**: Generate PR description using `.agents/templates/pr_template.md`.
+5. **Code Review Handoff**: Submit PR to **Code-Reviewer Agent (Opus 4.6)** for quality verification.
 
 ## 🛠 Technology Stack
 

@@ -3,11 +3,19 @@ name: frontend-next-antd
 description: Master instructions, architecture standards, component patterns, and styling rules for Frontend development with Next.js, React 19, TypeScript, Ant Design (AntD), Redux Toolkit/RTK Query, SCSS modules, and i18n.
 ---
 
-# Frontend Agent Skill: Next.js + React 19 + TypeScript + Ant Design
+# Frontend Agent Skill: Next.js 15 + React 19 + Ant Design (Model: Gemini 3.6)
 
-This skill governs all frontend client application development. Follow these rules and architectural guidelines when creating or modifying client-side code.
+This skill governs all frontend client application development (`apps/web`). As a worker sub-agent operating on **Gemini 3.6**, you MUST follow strict architectural guidelines, create dedicated git feature branches (`feature/frontend-<task-name>`), execute automated tests (`yarn type-check`, `yarn lint`), and submit Pull Requests for review by the **Code-Reviewer Agent (Opus 4.6)**.
 
 ---
+
+## 🔄 Sub-Agent Execution Pipeline
+
+1. **Branch Creation**: Create a unique task branch before modifying code: `git checkout -b feature/frontend-<task-name>`.
+2. **Implementation**: Build UI components, hooks, or pages adhering to Next.js 15 App Router, React 19, SCSS Modules, and AntD v5/v6.
+3. **Verification**: Run `yarn type-check` and `yarn lint` to verify build integrity.
+4. **Pull Request**: Generate PR description using `.agents/templates/pr_template.md`.
+5. **Code Review Handoff**: Submit PR to **Code-Reviewer Agent (Opus 4.6)** for quality verification.
 
 ## 🛠 Technology Stack
 

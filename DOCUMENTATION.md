@@ -125,9 +125,50 @@ Run these commands from the root directory of the monorepo:
 
 ---
 
-## 🤖 AI Agent Roles & Skills
+## 🤖 Multi-Agent Ecosystem & Automated Pipeline Architecture
 
-The workspace contains customized agent skill definitions in `.agents/`:
-- **Frontend Skill** (`.agents/skills/frontend-next-antd/SKILL.md`): Best practices for Next.js 15, AntD v5, SCSS Modules, RTK Query, and i18n localization.
-- **Backend Skill** (`.agents/skills/backend-nest-sqlite-typeorm/SKILL.md`): Architectural rules for NestJS feature modules, TypeORM SQLite entities, DTO validation, and Swagger docs.
-- **Global Rules** (`.agents/AGENTS.md`): Explicit guidelines (strict TypeScript, granular Git commits, no `any`, no inline styles).
+The workspace features a multi-agent AI architecture managed via configuration guidelines in `.agents/`. Each AI agent operates on a designated base model and domain responsibility:
+
+### 1. Model & Skill Matrix
+
+| Agent Role | Skill Location | Base Model | Responsibility Domain | Git Branch Pattern |
+| :--- | :--- | :--- | :--- | :--- |
+| **Orchestrator Agent** | `.agents/skills/agent-orchestrator` | **Gemini 3.6** | Multi-task decomposition, pipeline tracking, PR creation & handoff | `main` / management |
+| **Frontend Agent** | `.agents/skills/frontend-next-antd` | **Gemini 3.6** | Next.js 15 App Router, React 19, Ant Design, RTK Query, SCSS Modules | `feature/frontend-<task>` |
+| **Backend Agent** | `.agents/skills/backend-nest-sqlite-typeorm` | **Gemini 3.6** | NestJS modules, TypeORM entities, SQLite schema, Playwright scrapers, DTOs | `feature/backend-<task>` |
+| **QA / Tester Agent** | `.agents/skills/qa-testing` | **Gemini 3.6** | Unit tests (Jest), component tests, Playwright scraper verification | `test/<task>` |
+| **Code Reviewer Agent** | `.agents/skills/code-reviewer` | **Opus 4.6** | Deep code review, security audit, TypeScript compliance, PR approval/rejection | N/A (Reviewer) |
+
+---
+
+### 2. Task Lifecycle & Automated Pipeline
+
+Every task executed by worker sub-agents follows an automated 5-phase pipeline:
+
+```
+[Task Request] 
+      │
+      ▼
+1. Branch Creation ──────► git checkout -b <role>/<task-slug>
+      │
+      ▼
+2. Code Implementation ──► Gemini 3.6 (Frontend / Backend / QA Agent)
+      │
+      ▼
+3. Verification Suite ───► yarn type-check && yarn lint && yarn test
+      │
+      ▼
+4. PR & Commit ──────────► .agents/templates/pr_template.md
+      │
+      ▼
+5. Code Review Gate ─────► Opus 4.6 Code-Reviewer Agent (APPROVED / CHANGES_REQUESTED)
+```
+
+---
+
+### 3. Key Agent Rule Standards (`.agents/AGENTS.md`)
+- **Strict TypeScript**: 0 tolerance for `any` or untyped props. All shared models live in `@hunter-ai/types`.
+- **SCSS Modules Only**: Inline React `style={{ ... }}` is strictly prohibited.
+- **DTO Validation**: All NestJS controllers require `class-validator` decorated DTOs.
+- **Clean Branch Strategy**: No agent writes code directly on `main`.
+
