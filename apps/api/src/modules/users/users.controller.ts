@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, ParseUUIDPipe } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { CreateUserRequestDto } from './dto/create-user.dto';
@@ -20,7 +20,7 @@ export class UsersController {
   @ApiOperation({ summary: 'Get user by ID' })
   @ApiResponse({ status: 200, description: 'User details', type: UserEntity })
   @ApiResponse({ status: 404, description: 'User not found' })
-  async findOne(@Param('id') id: string): Promise<UserEntity> {
+  async findOne(@Param('id', ParseUUIDPipe) id: string): Promise<UserEntity> {
     return this.usersService.findOne(id);
   }
 
@@ -28,6 +28,6 @@ export class UsersController {
   @ApiOperation({ summary: 'Create new user' })
   @ApiResponse({ status: 201, description: 'User successfully created', type: UserEntity })
   async create(@Body() dto: CreateUserRequestDto): Promise<UserEntity> {
-    return this.usersService.create(dto);
+    return this.usersService.createUserFromDto(dto);
   }
 }
