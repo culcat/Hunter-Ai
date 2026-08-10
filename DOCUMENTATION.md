@@ -30,7 +30,7 @@ Hunter-Ai/
 | :--- | :--- | :--- |
 | **Monorepo Manager** | Yarn Workspaces + Turborepo | Parallel task runner, caching, cross-package linking |
 | **Frontend App (`apps/web`)** | Next.js 15 + React 19 | App Router, SSR, AntD Registry integration |
-| **UI Library** | Ant Design (`antd` v5+) | Dark theme algorithm (`ConfigProvider`), custom UI components |
+| **UI Library** | Ant Design (`antd` v6+) | Dark theme algorithm (`ConfigProvider`), `@ant-design/icons`, custom UI components |
 | **Frontend State & Fetching** | Redux Toolkit & RTK Query | Centralized store (`baseApi.ts`) with automatic Bearer token headers & tag invalidation |
 | **Backend Framework (`apps/api`)** | NestJS (v10+) | Feature-based modules, Dependency Injection, Clean Architecture |
 | **Database & ORM** | SQLite + TypeORM | Relational database with multi-indexed entities (`User`, `Resume`, `Vacancy`, `JobApplication`, `FavoriteVacancy`) |
