@@ -1,57 +1,67 @@
 # Project Documentation & Architecture Overview
 
-Welcome to the **Hunter-Ai** project documentation. This document provides a high-level overview of the system architecture, developer guidelines, agent skills, and workflow conventions.
+Welcome to the **Hunter-Ai** monorepository project documentation. This document provides a comprehensive overview of the full-stack architecture, repository structure, developer workflows, and AI agent guidelines.
 
 ---
 
-## 🏗 Architecture & Stack Overview
+## 🏗 Monorepo Architecture Overview
 
-The workspace is configured for full-stack TypeScript development:
+The repository is structured as a TypeScript monorepo using **Yarn Workspaces** and **Turborepo**:
 
-| Component | Framework / Library | Primary Purpose |
+```
+Hunter-Ai/
+├── apps/
+│   ├── web/                   # Next.js 15 + React 19 + Ant Design + RTK Query + SCSS Modules
+│   └── api/                   # NestJS API + SQLite + TypeORM + class-validator + Swagger
+├── packages/
+│   ├── types/                 # Shared TypeScript interfaces & API DTO contracts (@hunter-ai/types)
+│   └── tsconfig/              # Shared base tsconfig setups (@hunter-ai/tsconfig)
+├── .agents/                   # AI Assistant skills & architecture rules
+├── package.json               # Root monorepo workspace configuration
+├── turbo.json                 # Turborepo task pipeline configuration
+└── DOCUMENTATION.md           # Master project documentation
+```
+
+---
+
+## 💻 Technical Stack Matrix
+
+| Layer | Technology | Key Features |
 | :--- | :--- | :--- |
-| **Frontend** | Next.js + React 19 | Server-side rendering, client routing, user interface |
-| **UI Library** | Ant Design (`antd` v5+) | Enterprise component framework |
-| **Frontend State** | Redux Toolkit & RTK Query | Global application state management and data fetching |
-| **Frontend Styling** | SCSS Modules (`*.module.scss`) | Scoped component styling |
-| **Backend** | NestJS (v10+) | Modular RESTful API server |
-| **Database** | SQLite | Lightweight relational database |
-| **ORM** | TypeORM | Entity definitions, migrations, and database access |
-| **Validation** | `class-validator` + `class-transformer` | Request DTO validation |
-| **API Docs** | Swagger / OpenAPI | Automatic endpoint documentation |
+| **Monorepo Manager** | Yarn Workspaces + Turborepo | Parallel task runner, caching, cross-package linking |
+| **Frontend App (`apps/web`)** | Next.js 15 + React 19 | App Router, SSR, AntD Registry integration |
+| **UI Library** | Ant Design (`antd` v5+) | `ConfigProvider` theme customization, custom UI components |
+| **Frontend State & Fetching** | Redux Toolkit & RTK Query | Centralized store & API mutation caching |
+| **Frontend Styling** | SCSS Modules | Scoped component styles (`*.module.scss`) |
+| **Backend App (`apps/api`)** | NestJS (v10+) | Feature-based modules, Dependency Injection |
+| **Database & ORM** | SQLite + TypeORM | Relational database with typed entities |
+| **Validation** | `class-validator` + `class-transformer` | Global DTO validation pipe |
+| **API Documentation** | Swagger / OpenAPI | Automated API spec available at `/api/docs` |
+| **Shared Packages (`packages/*`)** | `@hunter-ai/types`, `@hunter-ai/tsconfig` | Reusable DTOs, interfaces, and TS rules |
 
 ---
 
-## 🤖 Agent Roles & Skill Definitions
+## 🛠 Useful Monorepo Commands
 
-The project relies on `.agents` workspace configurations to guide AI assistants during coding tasks:
+Run these commands from the root directory of the monorepo:
 
-### 1. Global Rules (`.agents/AGENTS.md`)
-- Defines strict TypeScript practices, commit conventions (`feat/fix/refactor: description`), code decomposition, and i18n requirements.
-- Prohibits the use of `any` types and inline JSX styles.
+### Workspace-wide Commands
+- **Start All Dev Servers**: `yarn dev`
+- **Build All Apps & Packages**: `yarn build`
+- **Type Check Workspace**: `yarn type-check`
+- **Lint Workspace**: `yarn lint`
+- **Run Tests Workspace**: `yarn test`
 
-### 2. Frontend Agent Skill (`.agents/skills/frontend-next-antd/SKILL.md`)
-- **App Structure**: Standardized Next.js layout (`app/` or `pages/`), component hierarchy (`src/components/ui` for basic components, `src/components/shared` for domain features).
-- **Ant Design**: Integrated with Next.js SSR via `AntdRegistry` and custom `ConfigProvider` themes.
-- **State & Data**: RTK Query slices for API interaction and Redux Toolkit store.
-- **Localization**: Structured i18n locales under `src/i18n/locales/`.
-
-### 3. Backend Agent Skill (`.agents/skills/backend-nest-sqlite-typeorm/SKILL.md`)
-- **Module Design**: Domain-driven feature modules under `src/modules/<feature>/`.
-- **Database & Entities**: TypeORM entities with SQLite database configuration and migration procedures.
-- **DTO Validation**: Strict request body validation using `class-validator` and `class-transformer`.
-- **Swagger Documentation**: Automated OpenAPI docs setup via `@nestjs/swagger`.
+### Targeted App Commands
+- **Start Web App Only**: `yarn dev --filter=@hunter-ai/web`
+- **Start API Server Only**: `yarn dev --filter=@hunter-ai/api`
+- **Build Shared Types**: `yarn workspace @hunter-ai/types build`
 
 ---
 
-## 🛠 Useful Commands
+## 🤖 AI Agent Roles & Skills
 
-### Frontend
-- Type Check: `yarn run tsc --noEmit`
-- Linter: `yarn run eslint --fix`
-- Unit Tests: `yarn run vitest run`
-
-### Backend
-- Start Server: `npm run start:dev`
-- Run Migrations: `npx typeorm migration:run`
-- Run Tests: `npm run test`
+The workspace contains customized agent skill definitions in `.agents/`:
+- **Frontend Skill** (`.agents/skills/frontend-next-antd/SKILL.md`): Best practices for Next.js 15, AntD v5, SCSS Modules, RTK Query, and i18n localization.
+- **Backend Skill** (`.agents/skills/backend-nest-sqlite-typeorm/SKILL.md`): Architectural rules for NestJS feature modules, TypeORM SQLite entities, DTO validation, and Swagger docs.
+- **Global Rules** (`.agents/AGENTS.md`): Explicit guidelines (strict TypeScript, granular Git commits, no `any`, no inline styles).

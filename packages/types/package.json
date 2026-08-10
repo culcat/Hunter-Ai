@@ -1,0 +1,16 @@
+{
+  "name": "@hunter-ai/types",
+  "version": "1.0.0",
+  "private": true,
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "type-check": "tsc --noEmit",
+    "lint": "echo 'No lint specified for types'"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0"
+  }
+}
