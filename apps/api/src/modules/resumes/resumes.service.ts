@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { PDFParse } from 'pdf-parse';
+import pdfParse from 'pdf-parse';
 import { ResumeEntity } from './entities/resume.entity';
 import { CreateResumeDto } from './dto/create-resume.dto';
 import { UpdateResumeDto } from './dto/update-resume.dto';
@@ -85,19 +85,13 @@ export class ResumesService {
     }
 
     let rawText = '';
-    let parser: PDFParse | null = null;
     try {
-      parser = new PDFParse({ data: fileBuffer });
-      const pdfData = await parser.getText();
+      const pdfData = await pdfParse(fileBuffer);
       rawText = pdfData.text || '';
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : String(err);
       console.error('PDF parsing error:', errorMessage);
       throw new BadRequestException(`Failed to extract text from uploaded PDF resume file: ${errorMessage}`);
-    } finally {
-      if (parser) {
-        await parser.destroy().catch(() => {});
-      }
     }
 
     const parsedData = this.parseResumeText(rawText);
