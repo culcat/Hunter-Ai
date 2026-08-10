@@ -42,6 +42,28 @@ const { Title, Text, Paragraph } = Typography;
 const { Dragger } = Upload;
 const { Option } = Select;
 
+interface UploadOptions {
+  file: string | Blob | File;
+  onSuccess?: (body: string) => void;
+  onError?: (err: Error) => void;
+}
+
+interface EditResumeFormValues {
+  title: string;
+  position: string;
+  grade: GradeLevel;
+  totalExperienceMonths: number;
+  englishLevel: EnglishLevel;
+  skills?: string;
+  summary?: string;
+}
+
+interface ApiErrorResponse {
+  data?: {
+    message?: string;
+  };
+}
+
 export default function ResumesPage() {
   const { data: resumes, isLoading, refetch } = useGetResumesQuery();
   const [uploadPdf] = useUploadResumePdfMutation();
@@ -49,9 +71,9 @@ export default function ResumesPage() {
   const [deleteResume] = useDeleteResumeMutation();
 
   const [editingResume, setEditingResume] = useState<Resume | null>(null);
-  const [form] = Form.useForm();
+  const [form] = Form.useForm<EditResumeFormValues>();
 
-  const handlePdfUpload = async (options: any) => {
+  const handlePdfUpload = async (options: UploadOptions) => {
     const { file, onSuccess, onError } = options;
     const formData = new FormData();
     formData.append('file', file);
@@ -59,11 +81,12 @@ export default function ResumesPage() {
     try {
       await uploadPdf(formData).unwrap();
       message.success('PDF Resume uploaded & parsed into structured JSON!');
-      onSuccess('ok');
+      if (onSuccess) onSuccess('ok');
       refetch();
-    } catch (err: any) {
-      message.error(err?.data?.message || 'Failed to parse uploaded PDF resume');
-      onError(err);
+    } catch (err: unknown) {
+      const apiErr = err as ApiErrorResponse;
+      message.error(apiErr?.data?.message || 'Failed to parse uploaded PDF resume');
+      if (onError) onError(err as Error);
     }
   };
 
@@ -80,7 +103,7 @@ export default function ResumesPage() {
     });
   };
 
-  const handleSaveEdit = async (values: any) => {
+  const handleSaveEdit = async (values: EditResumeFormValues) => {
     if (!editingResume) return;
 
     try {
@@ -106,8 +129,9 @@ export default function ResumesPage() {
       message.success('Resume updated successfully!');
       setEditingResume(null);
       refetch();
-    } catch (err: any) {
-      message.error(err?.data?.message || 'Failed to update resume');
+    } catch (err: unknown) {
+      const apiErr = err as ApiErrorResponse;
+      message.error(apiErr?.data?.message || 'Failed to update resume');
     }
   };
 
@@ -116,8 +140,9 @@ export default function ResumesPage() {
       await deleteResume(id).unwrap();
       message.success('Resume deleted');
       refetch();
-    } catch (err: any) {
-      message.error(err?.data?.message || 'Failed to delete resume');
+    } catch (err: unknown) {
+      const apiErr = err as ApiErrorResponse;
+      message.error(apiErr?.data?.message || 'Failed to delete resume');
     }
   };
 
@@ -129,7 +154,7 @@ export default function ResumesPage() {
       }).unwrap();
       message.success(resume.isPrimary ? 'Set as non-primary' : 'Set as primary candidate resume');
       refetch();
-    } catch (err: any) {
+    } catch (err: unknown) {
       message.error('Failed to toggle primary status');
     }
   };
