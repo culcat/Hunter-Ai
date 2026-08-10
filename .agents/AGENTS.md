@@ -33,6 +33,7 @@ Triggers when building or modifying backend modules, NestJS controllers/services
 ### ❌ Don'ts
 - ❌ Do NOT use `any` under any circumstances.
 - ❌ Do NOT use inline styles in React components.
+- ❌ Do NOT use `import React from 'react'` (or `'React'`). In React 19 / Next.js automatic JSX transform is enabled; import named exports directly if needed (e.g. `import { useState } from 'react'`).
 - ❌ Do NOT write monolithic files. Break down large components (`src/components/ui` & `src/components/shared`) and complex business logic into custom hooks (`use*.ts`) or dedicated service methods.
 - ❌ Do NOT bypass validation or leak database entities directly to the client without DTO transformation.
 
