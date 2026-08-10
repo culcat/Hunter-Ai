@@ -1,6 +1,7 @@
 {
   "extends": "@hunter-ai/tsconfig/nest.json",
   "compilerOptions": {
+    "outDir": "./dist",
     "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"]
