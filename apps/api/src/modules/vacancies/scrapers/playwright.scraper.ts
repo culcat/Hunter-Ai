@@ -404,4 +404,113 @@ export class PlaywrightScraper {
   private sanitizeCode(str: string): string {
     return str.toLowerCase().replace(/[^a-z0-9]/g, '');
   }
+
+  public parseCookiesString(rawCookies: string, defaultDomain: string): Array<{ name: string; value: string; domain: string; path: string }> {
+    if (!rawCookies || !rawCookies.trim()) return [];
+    try {
+      const trimmed = rawCookies.trim();
+      if (trimmed.startsWith('[')) {
+        const parsed = JSON.parse(trimmed);
+        if (Array.isArray(parsed)) {
+          return parsed.map((item) => ({
+            name: String(item.name || ''),
+            value: String(item.value || ''),
+            domain: String(item.domain || defaultDomain),
+            path: String(item.path || '/'),
+          })).filter(c => c.name && c.value);
+        }
+      }
+    } catch {}
+
+    return rawCookies.split(';').map(part => {
+      const idx = part.indexOf('=');
+      if (idx === -1) return null;
+      const name = part.substring(0, idx).trim();
+      const value = part.substring(idx + 1).trim();
+      if (!name) return null;
+      return {
+        name,
+        value,
+        domain: defaultDomain,
+        path: '/',
+      };
+    }).filter((c): c is { name: string; value: string; domain: string; path: string } => c !== null);
+  }
+
+  async verifySessionCookies(
+    platform: 'hh' | 'habr',
+    cookiesStr?: string,
+    userAgent?: string,
+  ): Promise<{ isValid: boolean; username?: string; message: string }> {
+    if (!cookiesStr || !cookiesStr.trim()) {
+      return { isValid: false, message: 'Куки не переданы или пусты' };
+    }
+
+    const defaultDomain = platform === 'hh' ? '.hh.ru' : '.habr.com';
+    const targetUrl = platform === 'hh' ? 'https://hh.ru/applicant/resumes' : 'https://career.habr.com/';
+    const parsedCookies = this.parseCookiesString(cookiesStr, defaultDomain);
+
+    if (parsedCookies.length === 0) {
+      return { isValid: false, message: 'Не удалось распарсить куки. Проверьте формат.' };
+    }
+
+    let browser: Browser | null = null;
+    try {
+      browser = await chromium.launch({
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
+      });
+
+      const context = await browser.newContext({
+        userAgent: userAgent || 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
+        viewport: { width: 1440, height: 900 },
+      });
+
+      await context.addCookies(parsedCookies);
+
+      const page = await context.newPage();
+      await page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: 20000 }).catch(() => null);
+      await page.waitForTimeout(2000);
+
+      const text = await page.innerText('body').catch(() => '');
+      const content = await page.content().catch(() => '');
+
+      await context.close();
+      await browser.close();
+
+      if (platform === 'hh') {
+        const isLoggedIn = text.includes('Мои резюме') || text.includes('Выйти') || content.includes('supernova') || content.includes('applicant');
+        if (isLoggedIn) {
+          const nameMatch = text.match(/([А-ЯA-Z][а-яa-z]+\s+[А-ЯA-Z][а-яa-z]+)/);
+          return {
+            isValid: true,
+            username: nameMatch ? nameMatch[1] : 'Авторизованный кандидат HH.ru',
+            message: 'Сессия HeadHunter успешно подтверждена!',
+          };
+        }
+      } else {
+        const isLoggedIn = text.includes('Мой профиль') || text.includes('Выйти') || content.includes('/users/') || content.includes('user-menu');
+        if (isLoggedIn) {
+          const nameMatch = text.match(/([А-ЯA-Z][а-яa-z]+\s+[А-ЯA-Z][а-яa-z]+)/);
+          return {
+            isValid: true,
+            username: nameMatch ? nameMatch[1] : 'Пользователь Хабр Карьеры',
+            message: 'Сессия Хабр Карьеры успешно подтверждена!',
+          };
+        }
+      }
+
+      return {
+        isValid: false,
+        message: `Куки переданы, но авторизация на ${platform === 'hh' ? 'HH.ru' : 'Хабр Карьере'} не определена. Возможно, срок действия сессии истек.`,
+      };
+    } catch (err: any) {
+      if (browser) await browser.close().catch(() => null);
+      return {
+        isValid: false,
+        message: `Ошибка при проверке авторизации: ${err.message}`,
+      };
+    }
+  }
 }
+

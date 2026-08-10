@@ -19,7 +19,12 @@ import type {
   Company,
   CreateCompanyDto,
   UpdateCompanyDto,
+  UserSettings,
+  UpdateUserSettingsDto,
+  TestCookiesDto,
+  TestCookiesResult,
 } from '@hunter-ai/types';
+
 
 export const baseApi = createApi({
   reducerPath: 'baseApi',
@@ -35,10 +40,34 @@ export const baseApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ['User', 'Resume', 'Vacancy', 'Application', 'Favorite', 'AiMatch', 'CoverLetter', 'Company'],
+  tagTypes: ['User', 'UserSettings', 'Resume', 'Vacancy', 'Application', 'Favorite', 'AiMatch', 'CoverLetter', 'Company'],
 
   endpoints: (builder) => ({
+    // User Settings Endpoints
+    getUserSettings: builder.query<UserSettings, void>({
+      query: () => '/users/settings',
+      providesTags: ['UserSettings'],
+    }),
+
+    updateUserSettings: builder.mutation<UserSettings, UpdateUserSettingsDto>({
+      query: (body) => ({
+        url: '/users/settings',
+        method: 'PUT',
+        body,
+      }),
+      invalidatesTags: ['UserSettings'],
+    }),
+
+    testCookies: builder.mutation<TestCookiesResult, TestCookiesDto>({
+      query: (body) => ({
+        url: '/users/settings/test-cookies',
+        method: 'POST',
+        body,
+      }),
+    }),
+
     // Auth Endpoints
+
     login: builder.mutation<AuthResponse, LoginDto>({
       query: (body) => ({
         url: '/auth/login',
@@ -250,7 +279,11 @@ export const baseApi = createApi({
 });
 
 export const {
+  useGetUserSettingsQuery,
+  useUpdateUserSettingsMutation,
+  useTestCookiesMutation,
   useLoginMutation,
+
   useRegisterMutation,
   useGetMeQuery,
   useGetResumesQuery,

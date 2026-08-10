@@ -7,4 +7,5 @@ export * from './match';
 export * from './cover-letter';
 export * from './application';
 export * from './company';
+export * from './user-settings';
 

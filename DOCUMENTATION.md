@@ -87,11 +87,26 @@ The client application connects to the NestJS API via Next.js rewrites (`/api/*`
    - PDF Resume Upload zone with drag & drop (`pdf-parse`).
    - Structured JSON editor for position, grade, experience, english level, skills, and summary.
    - Set primary candidate CV toggle.
-5. **`/applications` (Kanban Pipeline & Favorites)**:
-   - Track application stages (`applied`, `screening`, `interview`, `offer`, `rejected`).
-   - Manage application notes and bookmarked favorite jobs.
+6. **`/settings` (Platform Settings & Cookie Credentials)**:
+   - Manage HeadHunter (`hh.ru`) and Habr Career (`career.habr.com`) session cookies.
+   - **Cookie Format Support**: Accepts raw HTTP Cookie header strings (`name=val; name2=val2`) or exported JSON arrays.
+   - **Live Cookie Verification**: Triggers a Playwright browser check to verify active user login status on `hh.ru` and `career.habr.com`.
+   - **Auto-Apply Parameters**: Configure automated response toggles, default cover letter templates, daily application limits, and minimum AI match percentage thresholds.
 
 ---
+
+## 🍪 User Credentials & Cookie Integration (`UserSettingsEntity`)
+
+The system supports authenticated Playwright scraping and automated job responses via user-supplied cookies:
+
+- **Entity**: `UserSettingsEntity` (`apps/api/src/modules/users/entities/user-settings.entity.ts`)
+- **Endpoints**:
+  - `GET /users/settings`: Retrieve current user settings & saved cookies.
+  - `PUT /users/settings`: Update HeadHunter / Habr Career cookies, resume IDs, User-Agent, and auto-apply rules.
+  - `POST /users/settings/test-cookies`: Test session validity on HeadHunter / Habr Career via Playwright.
+
+---
+
 
 ## 🛠 Useful Monorepo Commands
 

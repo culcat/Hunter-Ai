@@ -7,6 +7,8 @@ import { JobApplicationEntity } from '../modules/applications/entities/job-appli
 import { FavoriteVacancyEntity } from '../modules/applications/entities/favorite-vacancy.entity';
 import { CompanyEntity } from '../modules/companies/entities/company.entity';
 
+import { UserSettingsEntity } from '../modules/users/entities/user-settings.entity';
+
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -14,6 +16,7 @@ import { CompanyEntity } from '../modules/companies/entities/company.entity';
       database: process.env.DATABASE_FILE || 'database.sqlite',
       entities: [
         UserEntity,
+        UserSettingsEntity,
         ResumeEntity,
         VacancyEntity,
         JobApplicationEntity,
@@ -25,4 +28,5 @@ import { CompanyEntity } from '../modules/companies/entities/company.entity';
   ],
 })
 export class DatabaseModule {}
+
 

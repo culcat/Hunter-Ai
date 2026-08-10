@@ -13,6 +13,7 @@ import {
   UserOutlined,
   BellOutlined,
   LoginOutlined,
+  SettingOutlined,
 } from '@ant-design/icons';
 import { useGetMeQuery, useLoginMutation, useRegisterMutation } from '@/store/api/baseApi';
 import styles from './Header.module.scss';
@@ -85,7 +86,13 @@ export const Header = () => {
       icon: <ThunderboltOutlined />,
       label: <Link href="/insights">AI Insights</Link>,
     },
+    {
+      key: '/settings',
+      icon: <SettingOutlined />,
+      label: <Link href="/settings">Settings & Cookies</Link>,
+    },
   ];
+
 
   return (
     <header className={styles.header}>

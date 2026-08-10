@@ -18,6 +18,7 @@ import { PlaywrightScraper } from './scrapers/playwright.scraper';
     PlaywrightScraper,
   ],
   controllers: [VacanciesController],
-  exports: [VacanciesService],
+  exports: [VacanciesService, PlaywrightScraper],
 })
 export class VacanciesModule {}
+
