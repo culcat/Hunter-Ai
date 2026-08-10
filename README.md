@@ -10,8 +10,9 @@
 [![NestJS](https://img.shields.io/badge/NestJS-v10.4-e0234e?style=for-the-badge&logo=nestjs)](https://nestjs.com/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-v5.7-3178c6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
 [![Ant Design](https://img.shields.io/badge/Ant%20Design-v5.24-0170fe?style=for-the-badge&logo=antdesign)](https://ant.design/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
-[Возможности](#-основные-возможности) • [Архитектура](#-архитектура-проекта) • [Быстрый запуск](#-быстрый-запуск) • [Скрапинг](#-парсинг-вакансий-и-компаний) • [Документация](#-документация)
+[Возможности](#-основные-возможности) • [Архитектура](#-архитектура-проекта) • [Быстрый запуск](#-быстрый-запуск) • [Скрапинг](#-парсинг-вакансий-и-компаний) • [Документация](#-документация) • [Лицензия](#-лицензия)
 
 </div>
 
@@ -142,6 +143,12 @@ yarn build
 ## 📖 Документация
 
 Подробная архитектурная документация, структура сущностей базы данных, схемы DTO и гайдлайны по разработке содержатся в файле [`DOCUMENTATION.md`](DOCUMENTATION.md).
+
+---
+
+## 📄 Лицензия
+
+Проект распространяется под открытой лицензией **[MIT](LICENSE)**. Вы можете свободно использовать, модифицировать и распространять данный код.
 
 ---
 

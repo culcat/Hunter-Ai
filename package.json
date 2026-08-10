@@ -3,6 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "description": "Hunter-Ai Monorepo with Next.js frontend, NestJS backend, and shared packages",
+  "license": "MIT",
   "packageManager": "yarn@1.22.22",
   "workspaces": [
     "apps/*",
