@@ -139,7 +139,7 @@ export class VacanciesService {
     } else if (source === 'getmatch' || target.includes('getmatch.ru')) {
       parsedDtos = await this.getMatchScraper.parseVacancies(target);
     } else {
-      parsedDtos = await this.playwrightScraper.scrapeCorporatePage(target);
+      parsedDtos = await this.playwrightScraper.scrapeTarget({ url: target });
     }
 
     const savedVacancies: VacancyEntity[] = [];

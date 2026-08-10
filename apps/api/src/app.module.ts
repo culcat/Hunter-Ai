@@ -7,6 +7,7 @@ import { VacanciesModule } from './modules/vacancies/vacancies.module';
 import { AiMatchModule } from './modules/ai-match/ai-match.module';
 import { CoverLettersModule } from './modules/cover-letters/cover-letters.module';
 import { ApplicationsModule } from './modules/applications/applications.module';
+import { CompaniesModule } from './modules/companies/companies.module';
 
 @Module({
   imports: [
@@ -18,6 +19,8 @@ import { ApplicationsModule } from './modules/applications/applications.module';
     AiMatchModule,
     CoverLettersModule,
     ApplicationsModule,
+    CompaniesModule,
   ],
 })
 export class AppModule {}
+

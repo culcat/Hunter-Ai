@@ -6,3 +6,5 @@ export * from './vacancy';
 export * from './match';
 export * from './cover-letter';
 export * from './application';
+export * from './company';
+

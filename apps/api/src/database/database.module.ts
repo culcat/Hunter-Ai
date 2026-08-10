@@ -5,6 +5,7 @@ import { ResumeEntity } from '../modules/resumes/entities/resume.entity';
 import { VacancyEntity } from '../modules/vacancies/entities/vacancy.entity';
 import { JobApplicationEntity } from '../modules/applications/entities/job-application.entity';
 import { FavoriteVacancyEntity } from '../modules/applications/entities/favorite-vacancy.entity';
+import { CompanyEntity } from '../modules/companies/entities/company.entity';
 
 @Module({
   imports: [
@@ -17,9 +18,11 @@ import { FavoriteVacancyEntity } from '../modules/applications/entities/favorite
         VacancyEntity,
         JobApplicationEntity,
         FavoriteVacancyEntity,
+        CompanyEntity,
       ],
       synchronize: true,
     }),
   ],
 })
 export class DatabaseModule {}
+

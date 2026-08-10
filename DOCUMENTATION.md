@@ -34,10 +34,38 @@ Hunter-Ai/
 | **Frontend State & Fetching** | Redux Toolkit & RTK Query | Centralized store (`baseApi.ts`) with automatic Bearer token headers & tag invalidation |
 | **Backend Framework (`apps/api`)** | NestJS (v10+) | Feature-based modules, Dependency Injection, Clean Architecture |
 | **Database & ORM** | SQLite + TypeORM | Relational database with multi-indexed entities (`User`, `Resume`, `Vacancy`, `JobApplication`, `FavoriteVacancy`) |
-| **Document Processing & Scrapers** | `pdf-parse`, `playwright` | PDF resume parsing, automated scrapers for HeadHunter, Habr Career, GetMatch, corporate portals |
+| **Document Processing & Scrapers** | `pdf-parse`, `playwright` | PDF resume parsing, automated Playwright scrapers with authorization support for HeadHunter, Habr Career, GetMatch, and Russian IT company career portals |
 | **Authentication** | JWT (`@nestjs/jwt`), `bcrypt`, Passport | Bearer token authorization, `@CurrentUser()` decorator, `JwtAuthGuard` |
 | **Validation & Docs** | `class-validator` + Swagger | Global DTO validation pipe, OpenAPI interactive UI at `/api/docs` |
-| **Shared Packages (`packages/*`)** | `@hunter-ai/types`, `@hunter-ai/tsconfig` | Reusable DTOs, interfaces, filter contracts, and TS rules |
+| **Shared Packages (`packages/*`)** | `@hunter-ai/types`, `@hunter-ai/tsconfig` | Reusable DTOs, interfaces (`Company`, `Vacancy`, `Resume`), filter contracts, and TS rules |
+
+---
+
+## 🏢 Russian IT Companies & Playwright Career Scraper Service (`CompaniesModule`)
+
+The platform includes a dedicated database module and Playwright scraping engine for Russian IT company career sites:
+
+### Pre-Seeded Russian IT Companies:
+1. **Яндекс** (`https://yandex.ru/jobs/vacancies`)
+2. **VK** (`https://team.vk.company/vacancies/`)
+3. **Сбер (SberTech)** (`https://rabota.sber.ru/search`)
+4. **Т-Банк** (`https://www.tbank.ru/career/it/`)
+5. **Авито** (`https://career.avito.ru/vacancies`)
+6. **Ozon Tech** (`https://job.ozon.ru/vacancy/`)
+7. **Альфа-Банк** (`https://job.alfabank.ru/vacancies`)
+8. **Лаборатория Касперского** (`https://careers.kaspersky.ru/vacancies/`)
+9. **Selectel** (`https://selectel.ru/careers/`)
+10. **Positive Technologies** (`https://ptsecurity.com/ru-ru/career/`)
+11. **Хабр Карьера** (`https://career.habr.com/vacancies`)
+12. **HeadHunter** (`https://hh.ru/search/vacancy?text=developer`)
+
+### Scraper Engine Capabilities:
+- **Playwright Browser Automation**: Headless Chromium instance navigating dynamic SPA career portals.
+- **Authorization Support**: Form-based and cookie-based authentication before scraping for gated career sites (`authConfig` with login URL, username, password, and custom selectors).
+- **Background API Interception & DOM Extraction**: Intercepts JSON job APIs and parses structured DOM cards.
+- **NLP Tech Stack & Grade Detection**: Extracts skills (React, TypeScript, Python, NestJS, Go, Docker, PostgreSQL), grade level (Junior/Middle/Senior/Lead), salary range, and work format (remote/office/hybrid).
+- **Deduplication**: Automatically upserts vacancies into SQLite database by `url` or `externalId`.
+
 
 ---
 

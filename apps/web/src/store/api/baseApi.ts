@@ -16,12 +16,15 @@ import type {
   CreateApplicationDto,
   UpdateApplicationStatusDto,
   UserFavorite,
+  Company,
+  CreateCompanyDto,
+  UpdateCompanyDto,
 } from '@hunter-ai/types';
 
 export const baseApi = createApi({
   reducerPath: 'baseApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: '/api',
+    baseUrl: 'http://localhost:3001',
     prepareHeaders: (headers) => {
       if (typeof window !== 'undefined') {
         const token = localStorage.getItem('hunter_ai_token');
@@ -32,7 +35,8 @@ export const baseApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ['User', 'Resume', 'Vacancy', 'Application', 'Favorite', 'AiMatch', 'CoverLetter'],
+  tagTypes: ['User', 'Resume', 'Vacancy', 'Application', 'Favorite', 'AiMatch', 'CoverLetter', 'Company'],
+
   endpoints: (builder) => ({
     // Auth Endpoints
     login: builder.mutation<AuthResponse, LoginDto>({
@@ -197,6 +201,51 @@ export const baseApi = createApi({
       }),
       invalidatesTags: ['Favorite'],
     }),
+
+    // Companies Endpoints
+    getCompanies: builder.query<Company[], void>({
+      query: () => '/companies',
+      providesTags: ['Company'],
+    }),
+
+    getCompany: builder.query<Company, string>({
+      query: (id) => `/companies/${id}`,
+      providesTags: (_result, _err, id) => [{ type: 'Company', id }],
+    }),
+
+    createCompany: builder.mutation<Company, CreateCompanyDto>({
+      query: (body) => ({
+        url: '/companies',
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['Company'],
+    }),
+
+    updateCompany: builder.mutation<Company, { id: string; data: UpdateCompanyDto }>({
+      query: ({ id, data }) => ({
+        url: `/companies/${id}`,
+        method: 'PATCH',
+        body: data,
+      }),
+      invalidatesTags: (_result, _err, { id }) => ['Company', { type: 'Company', id }],
+    }),
+
+    scrapeCompany: builder.mutation<{ company: Company; scrapedVacanciesCount: number }, string>({
+      query: (id) => ({
+        url: `/companies/${id}/scrape`,
+        method: 'POST',
+      }),
+      invalidatesTags: ['Company', 'Vacancy'],
+    }),
+
+    scrapeAllCompanies: builder.mutation<{ totalScraped: number; details: Record<string, number> }, void>({
+      query: () => ({
+        url: '/companies/scrape-all',
+        method: 'POST',
+      }),
+      invalidatesTags: ['Company', 'Vacancy'],
+    }),
   }),
 });
 
@@ -222,4 +271,11 @@ export const {
   useGetFavoritesQuery,
   useAddFavoriteMutation,
   useRemoveFavoriteMutation,
+  useGetCompaniesQuery,
+  useGetCompanyQuery,
+  useCreateCompanyMutation,
+  useUpdateCompanyMutation,
+  useScrapeCompanyMutation,
+  useScrapeAllCompaniesMutation,
 } = baseApi;
+

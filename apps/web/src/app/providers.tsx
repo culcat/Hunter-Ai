@@ -1,7 +1,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { AntdRegistry } from '@ant-design/nextjs-registry';
+
 import { ConfigProvider, theme } from 'antd';
 import { Provider } from 'react-redux';
 import { store } from '@/store/store';
@@ -9,7 +9,7 @@ import { store } from '@/store/store';
 export function Providers({ children }: { children: ReactNode }) {
   return (
     <Provider store={store}>
-      <AntdRegistry>
+
         <ConfigProvider
           theme={{
             algorithm: theme.darkAlgorithm,
@@ -21,7 +21,7 @@ export function Providers({ children }: { children: ReactNode }) {
         >
           {children}
         </ConfigProvider>
-      </AntdRegistry>
+
     </Provider>
   );
 }
