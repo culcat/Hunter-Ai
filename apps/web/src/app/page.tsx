@@ -48,7 +48,7 @@ export default function DashboardPage() {
 
       <div className={styles.contentWrapper}>
         {/* Hero Welcome Banner */}
-        <Card className={styles.heroCard} bordered={false}>
+        <Card className={styles.heroCard} variant="borderless">
           <Row align="middle" justify="space-between">
             <Col xs={24} md={16}>
               <Space direction="vertical" size={8}>
@@ -64,14 +64,14 @@ export default function DashboardPage() {
               </Space>
             </Col>
             <Col xs={24} md={8} className={styles.heroActionCol}>
-              <Space direction="vertical" size={12} style={{ width: '100%' }}>
+              <Space direction="vertical" size={12} className={styles.fullWidthSpace}>
                 <Link href="/jobs">
                   <Button
                     type="primary"
                     size="large"
                     block
                     icon={<SearchOutlined />}
-                    className={styles.primaryHeroBtn}
+                    className={styles.heroButton}
                   >
                     Search Vacancies & Filter
                   </Button>
@@ -82,7 +82,6 @@ export default function DashboardPage() {
                     size="large"
                     block
                     icon={<FilePdfOutlined />}
-                    className={styles.secondaryHeroBtn}
                   >
                     Upload / Parse PDF Resume
                   </Button>
@@ -99,8 +98,8 @@ export default function DashboardPage() {
               <Statistic
                 title={<span className={styles.statTitle}>Active Vacancies</span>}
                 value={vacanciesData?.total || 0}
-                prefix={<AimOutlined style={{ color: '#3b82f6' }} />}
-                valueStyle={{ color: '#f8fafc', fontWeight: 700 }}
+                prefix={<AimOutlined className={styles.iconBlue} />}
+                className={styles.statValue}
               />
             </Card>
           </Col>
@@ -109,8 +108,8 @@ export default function DashboardPage() {
               <Statistic
                 title={<span className={styles.statTitle}>My Applications</span>}
                 value={applications?.length || 0}
-                prefix={<SendOutlined style={{ color: '#10b981' }} />}
-                valueStyle={{ color: '#f8fafc', fontWeight: 700 }}
+                prefix={<SendOutlined className={styles.iconGreen} />}
+                className={styles.statValue}
               />
             </Card>
           </Col>
@@ -119,8 +118,8 @@ export default function DashboardPage() {
               <Statistic
                 title={<span className={styles.statTitle}>Candidate Resumes</span>}
                 value={resumes?.length || 0}
-                prefix={<FilePdfOutlined style={{ color: '#a855f7' }} />}
-                valueStyle={{ color: '#f8fafc', fontWeight: 700 }}
+                prefix={<FilePdfOutlined className={styles.iconPurple} />}
+                className={styles.statValue}
               />
             </Card>
           </Col>
@@ -129,8 +128,8 @@ export default function DashboardPage() {
               <Statistic
                 title={<span className={styles.statTitle}>Primary Role Grade</span>}
                 value={primaryResume?.parsedData?.grade || 'Middle'}
-                prefix={<ThunderboltOutlined style={{ color: '#eab308' }} />}
-                valueStyle={{ color: '#f8fafc', fontWeight: 700, fontSize: 20 }}
+                prefix={<ThunderboltOutlined className={styles.iconYellow} />}
+                className={styles.statValue}
               />
             </Card>
           </Col>
@@ -143,7 +142,7 @@ export default function DashboardPage() {
             <Card
               title={
                 <Space>
-                  <ThunderboltOutlined style={{ color: '#eab308' }} />
+                  <ThunderboltOutlined className={styles.iconYellow} />
                   <span className={styles.cardHeaderTitle}>Recent Vacancies</span>
                 </Space>
               }
@@ -155,7 +154,7 @@ export default function DashboardPage() {
               className={styles.sectionCard}
             >
               {isVacanciesLoading ? (
-                <div style={{ textAlign: 'center', padding: 40 }}>
+                <div className={styles.loadingSpinner}>
                   <Spin size="large" />
                 </div>
               ) : (
@@ -213,11 +212,11 @@ export default function DashboardPage() {
 
           {/* Sidebar Insights Column */}
           <Col xs={24} lg={8}>
-            <Space direction="vertical" size={24} style={{ width: '100%' }}>
+            <Space direction="vertical" size={24} className={styles.fullWidthSpace}>
               <Card
                 title={
                   <Space>
-                    <CheckCircleFilled style={{ color: '#10b981' }} />
+                    <CheckCircleFilled className={styles.iconGreen} />
                     <span className={styles.cardHeaderTitle}>Candidate Profile Alignment</span>
                   </Space>
                 }
@@ -225,13 +224,13 @@ export default function DashboardPage() {
               >
                 {primaryResume ? (
                   <div>
-                    <Paragraph style={{ color: '#f8fafc', fontWeight: 600 }}>
+                    <Paragraph className={styles.profileTitle}>
                       Active Resume: {primaryResume.title}
                     </Paragraph>
-                    <Paragraph style={{ color: '#cbd5e1' }}>
+                    <Paragraph className={styles.profileDesc}>
                       Position: <strong>{primaryResume.parsedData?.position}</strong> ({primaryResume.parsedData?.grade})
                     </Paragraph>
-                    <Space wrap style={{ marginTop: 8 }}>
+                    <Space wrap className={styles.tagSpace}>
                       {(primaryResume.parsedData?.skills || []).map((sk) => (
                         <Tag key={sk} color="blue">
                           {sk}
@@ -241,7 +240,7 @@ export default function DashboardPage() {
                   </div>
                 ) : (
                   <div>
-                    <Paragraph style={{ color: '#cbd5e1' }}>
+                    <Paragraph className={styles.profileDesc}>
                       No primary resume detected. Upload your PDF CV in "My Resumes" to unlock AI match scoring!
                     </Paragraph>
                     <Link href="/resumes">

@@ -1,38 +1,71 @@
 @use '../../../styles/variables.scss' as *;
 
 .pageContainer {
-  background-color: $bg-light;
+  background-color: #0a0f1d;
   min-height: 100vh;
+  color: #fff;
 }
 
 .contentWrapper {
-  max-width: 1280px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 32px 24px;
 }
 
+.loadingContainer {
+  min-height: 100vh;
+  background-color: #0a0f1d;
+  color: #fff;
+  text-align: center;
+  padding-top: 100px;
+}
+
+.notFoundContainer {
+  min-height: 100vh;
+  background-color: #0a0f1d;
+  color: #fff;
+  padding: 40px;
+}
+
+.notFoundWrapper {
+  max-width: 800px;
+  margin: 40px auto;
+}
+
+.notFoundTitle {
+  color: #fff !important;
+}
+
 .breadcrumbMargin {
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 }
 
 .bannerCard {
-  border-radius: 8px;
+  background: #131b2e;
+  border-color: #1e293b;
   margin-bottom: 24px;
 }
 
 .avatarCompany {
-  background-color: #0f172a;
-  font-weight: 700;
-  font-size: 24px;
+  background-color: #3b82f6;
+  font-size: 28px;
 }
 
 .roleTitle {
+  color: #fff !important;
   margin: 0 !important;
-  color: #0f172a;
 }
 
 .metaRow {
   margin-top: 8px;
+}
+
+.companyName {
+  color: #f8fafc;
+}
+
+.locationText {
+  color: #94a3b8;
 }
 
 .salaryHighlight {
@@ -43,74 +76,75 @@
   text-align: right;
 }
 
-.matchTag {
-  font-size: 16px;
-  padding: 6px 16px;
-  font-weight: 700;
-  border-radius: 4px;
+.sourceTag {
+  padding: 6px 12px;
+  font-size: 14px;
 }
 
-.applyButton {
-  background-color: #3b82f6;
+.detailCard {
+  background: #131b2e;
+  border-color: #1e293b;
 }
 
-.mainCard {
-  border-radius: 8px;
-  margin-bottom: 24px;
+.cardSectionTitle {
+  color: #fff !important;
 }
 
 .jobParagraph {
+  color: #cbd5e1 !important;
   font-size: 16px;
-  line-height: 1.6;
+  white-space: pre-line;
 }
 
-.techTag {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
+.dividerDark {
+  border-color: #1e293b !important;
+}
+
+.techTagLarge {
+  font-size: 14px;
   padding: 4px 10px;
 }
 
-.techTagGroup {
-  margin-bottom: 24px;
+.metaList {
+  color: #cbd5e1;
 }
 
-.checkIcon {
-  color: #10b981;
-  margin-top: 4px;
+.metaListItem {
+  border-color: #1e293b !important;
+  color: #cbd5e1 !important;
 }
 
-.respItem {
-  padding: 8px 0;
-  border: none;
+.externalLink {
+  color: #3b82f6;
 }
 
-.respText {
-  font-size: 15px;
+.fullWidthSpace {
+  width: 100%;
 }
 
-.sidebarCard {
-  border-radius: 8px;
-  margin-bottom: 24px;
+.fullWidthSelect {
+  width: 100%;
 }
 
-.purpleIcon {
-  color: #8b5cf6;
-}
-
-.dividerMargin {
-  margin: 12px 0;
-}
-
-.edgeTitle {
+.fieldLabel {
   display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.variantBox {
+  background: #0f172a;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.variantHeader {
+  text-align: right;
   margin-bottom: 8px;
 }
 
-.edgeItem {
-  padding: 4px 0;
-  border: none;
-}
-
-.edgeText {
-  font-size: 13px;
+.variantContent {
+  color: #f8fafc !important;
+  white-space: pre-line;
+  margin: 0 !important;
 }

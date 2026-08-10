@@ -36,6 +36,7 @@ import {
   useDeleteResumeMutation,
 } from '@/store/api/baseApi';
 import type { Resume, GradeLevel, EnglishLevel } from '@hunter-ai/types';
+import styles from './resumes.module.scss';
 
 const { Title, Text, Paragraph } = Typography;
 const { Dragger } = Upload;
@@ -134,42 +135,42 @@ export default function ResumesPage() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0a0f1d', color: '#fff' }}>
+    <div className={styles.pageContainer}>
       <Header />
 
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '32px 24px' }}>
-        <Space direction="vertical" size={24} style={{ width: '100%' }}>
+      <div className={styles.contentWrapper}>
+        <Space direction="vertical" size={24} className={styles.fullWidthSpace}>
           <div>
-            <Title level={2} style={{ color: '#fff', margin: 0 }}>
+            <Title level={2} className={styles.pageHeaderTitle}>
               AI Resume Parser & Profile Manager
             </Title>
-            <Paragraph style={{ color: '#94a3b8', fontSize: 16 }}>
+            <Paragraph className={styles.pageHeaderSub}>
               Upload your PDF resume to automatically extract position, grade, skills, work experience, and education into structured JSON.
             </Paragraph>
           </div>
 
-          <Card style={{ background: '#131b2e', borderColor: '#1e293b' }}>
+          <Card className={styles.uploadCard}>
             <Dragger
               customRequest={handlePdfUpload}
               showUploadList={false}
               accept=".pdf"
-              style={{ background: '#0f172a', borderColor: '#334155', padding: 24 }}
+              className={styles.draggerArea}
             >
               <p className="ant-upload-drag-icon">
-                <InboxOutlined style={{ fontSize: 48, color: '#3b82f6' }} />
+                <InboxOutlined className={styles.uploadIcon} />
               </p>
-              <p className="ant-upload-text" style={{ color: '#f8fafc', fontSize: 18, fontWeight: 600 }}>
+              <p className={styles.uploadText}>
                 Click or drag PDF resume file to this area to parse
               </p>
-              <p className="ant-upload-hint" style={{ color: '#64748b' }}>
+              <p className={styles.uploadHint}>
                 Supports PDF resumes (HH.ru format, LinkedIn PDF export, or standard CVs).
               </p>
             </Dragger>
           </Card>
 
-          <Divider style={{ borderColor: '#1e293b' }} />
+          <Divider className={styles.dividerDark} />
 
-          <Title level={3} style={{ color: '#fff' }}>
+          <Title level={3} className={styles.sectionTitle}>
             Parsed Candidate Profiles ({resumes?.length || 0})
           </Title>
 
@@ -179,19 +180,15 @@ export default function ResumesPage() {
             renderItem={(item) => (
               <Card
                 key={item.id}
-                style={{
-                  background: '#131b2e',
-                  borderColor: item.isPrimary ? '#3b82f6' : '#1e293b',
-                  marginBottom: 16,
-                }}
+                className={item.isPrimary ? styles.resumeCardPrimary : styles.resumeCard}
               >
                 <Row align="middle" justify="space-between">
                   <Col xs={24} md={16}>
                     <Space size={12} align="center">
-                      <FilePdfOutlined style={{ fontSize: 32, color: '#ef4444' }} />
+                      <FilePdfOutlined className={styles.pdfIcon} />
                       <div>
                         <Space align="center">
-                          <Title level={4} style={{ color: '#fff', margin: 0 }}>
+                          <Title level={4} className={styles.resumeTitle}>
                             {item.title}
                           </Title>
                           {item.isPrimary && (
@@ -200,13 +197,13 @@ export default function ResumesPage() {
                             </Tag>
                           )}
                         </Space>
-                        <Text style={{ color: '#94a3b8', display: 'block' }}>
-                          Position: <strong style={{ color: '#f8fafc' }}>{item.parsedData?.position || 'Software Engineer'}</strong> ({item.parsedData?.grade || 'Middle'}) • Experience: {Math.round((item.parsedData?.totalExperienceMonths || 12) / 12)} years • English: {item.parsedData?.englishLevel || 'B2'}
+                        <Text className={styles.resumeMeta}>
+                          Position: <strong className={styles.highlightText}>{item.parsedData?.position || 'Software Engineer'}</strong> ({item.parsedData?.grade || 'Middle'}) • Experience: {Math.round((item.parsedData?.totalExperienceMonths || 12) / 12)} years • English: {item.parsedData?.englishLevel || 'B2'}
                         </Text>
                       </div>
                     </Space>
 
-                    <div style={{ marginTop: 12 }}>
+                    <div className={styles.skillGroup}>
                       <Space size={6} wrap>
                         {(item.parsedData?.skills || []).map((skill) => (
                           <Tag key={skill} color="geekblue">
@@ -217,10 +214,10 @@ export default function ResumesPage() {
                     </div>
                   </Col>
 
-                  <Col xs={24} md={8} style={{ textAlign: 'right', marginTop: 16 }}>
+                  <Col xs={24} md={8} className={styles.actionRightCol}>
                     <Space>
                       <Button
-                        icon={item.isPrimary ? <StarFilled style={{ color: '#f59e0b' }} /> : <StarOutlined />}
+                        icon={item.isPrimary ? <StarFilled className={styles.starIconActive} /> : <StarOutlined />}
                         onClick={() => handleTogglePrimary(item)}
                       >
                         {item.isPrimary ? 'Primary' : 'Make Primary'}
@@ -275,7 +272,7 @@ export default function ResumesPage() {
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item name="totalExperienceMonths" label="Total Experience (Months)">
-                <InputNumber style={{ width: '100%' }} min={0} />
+                <InputNumber className={styles.fullWidthInputNumber} min={0} />
               </Form.Item>
             </Col>
             <Col span={12}>

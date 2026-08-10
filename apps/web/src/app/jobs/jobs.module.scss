@@ -1,85 +1,154 @@
 @use '../../styles/variables.scss' as *;
 
 .pageContainer {
-  background-color: $bg-light;
+  background-color: #0a0f1d;
   min-height: 100vh;
+  color: #fff;
 }
 
 .contentWrapper {
-  max-width: 1280px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 32px 24px;
 }
 
-.breadcrumbMargin {
-  margin-bottom: 16px;
-}
-
-.pageHeader {
-  margin-bottom: 24px;
-}
-
-.pageTitle {
-  margin: 0 !important;
-  color: #0f172a;
-}
-
-.cardRounded {
-  border-radius: 8px;
-}
-
-.iconPrimary {
-  color: #3b82f6;
-}
-
-.fieldLabel {
-  display: block;
-  margin-bottom: 8px;
-}
-
-.remoteSwitchRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.fullWidthSpace {
   width: 100%;
 }
 
-.listItem {
-  padding: 24px 0;
-  border-bottom: 1px solid #f0f0f0;
+.pageHeaderTitle {
+  color: #fff !important;
+  margin: 0 !important;
 }
 
-.matchScoreTag {
-  font-size: 14px;
-  padding: 4px 12px;
-  font-weight: 600;
-}
-
-.salaryText {
+.pageHeaderSub {
+  color: #94a3b8 !important;
   font-size: 16px;
-  color: #0f172a;
 }
 
-.avatarCompany {
-  background-color: #0f172a;
-  font-weight: 700;
+.rightCol {
+  text-align: right;
 }
 
-.roleTitleLink {
-  font-size: 18px;
-  color: #0f172a;
-  font-weight: 600;
+.actionRightCol {
+  text-align: right;
+  margin-top: 16px;
 }
 
-.companyMetaRow {
-  margin-top: 4px;
+.actionStackEnd {
+  width: 100%;
+  align-items: flex-end;
 }
 
-.jobDescription {
-  margin: 12px 0 !important;
+.filterCard {
+  background: #131b2e;
+  border-color: #1e293b;
+}
+
+.fullWidthSelect {
+  width: 100%;
+}
+
+.searchIcon {
+  color: #64748b;
+}
+
+.vacancyCard {
+  background: #131b2e;
+  border-color: #1e293b;
+  margin-bottom: 16px;
+}
+
+.vacancyTitle {
+  color: #fff !important;
+  margin: 0 !important;
+}
+
+.vacancyTitleLink {
+  color: #f8fafc;
+}
+
+.vacancyMeta {
+  color: #94a3b8;
+}
+
+.companyHighlight {
+  color: #cbd5e1;
+}
+
+.vacancyDesc {
+  color: #cbd5e1 !important;
+  margin: 4px 0 !important;
+}
+
+.tagSpace {
+  margin-top: 6px;
 }
 
 .techTag {
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
+  background: #1e293b;
+  border-color: #334155;
+  color: #cbd5e1;
+}
+
+.drawerContentSpace {
+  width: 100%;
+}
+
+.drawerTitle {
+  margin: 0 !important;
+}
+
+.fieldLabelBlock {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.fieldLabelBlockSm {
+  display: block;
+  margin-bottom: 6px;
+  color: #f8fafc;
+  font-weight: 600;
+}
+
+.matchCard {
+  background: #0f172a;
+  border-color: #1e293b;
+}
+
+.matchScoreHeader {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.matchScoreTitle {
+  color: #f8fafc !important;
+  margin: 8px 0 !important;
+}
+
+.matchScoreSub {
+  color: #94a3b8;
+}
+
+.dividerDark {
+  border-color: #334155 !important;
+}
+
+.greenTitle {
+  color: #10b981 !important;
+}
+
+.redTitle {
+  color: #ef4444 !important;
+}
+
+.listItemText {
+  color: #cbd5e1 !important;
+}
+
+.missingSkillsContainer {
+  margin-top: 12px;
 }

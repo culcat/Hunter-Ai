@@ -15,7 +15,6 @@ import {
   Divider,
   List,
   Modal,
-  Form,
   Input,
   Select,
   message,
@@ -38,6 +37,7 @@ import {
   useCreateApplicationMutation,
 } from '@/store/api/baseApi';
 import type { CoverLetterVariant } from '@hunter-ai/types';
+import styles from './jobDetail.module.scss';
 
 const { Title, Text, Paragraph } = Typography;
 const { Option } = Select;
@@ -117,7 +117,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
 
   if (isVacancyLoading) {
     return (
-      <div style={{ minHeight: '100vh', background: '#0a0f1d', color: '#fff', textAlign: 'center', paddingTop: 100 }}>
+      <div className={styles.loadingContainer}>
         <Spin size="large" />
       </div>
     );
@@ -125,10 +125,10 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
 
   if (!vacancy) {
     return (
-      <div style={{ minHeight: '100vh', background: '#0a0f1d', color: '#fff', padding: 40 }}>
+      <div className={styles.notFoundContainer}>
         <Header />
-        <div style={{ maxWidth: 800, margin: '40px auto' }}>
-          <Title level={3} style={{ color: '#fff' }}>
+        <div className={styles.notFoundWrapper}>
+          <Title level={3} className={styles.notFoundTitle}>
             Vacancy Not Found
           </Title>
           <Link href="/jobs">
@@ -140,38 +140,38 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0a0f1d', color: '#fff' }}>
+    <div className={styles.pageContainer}>
       <Header />
 
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '32px 24px' }}>
+      <div className={styles.contentWrapper}>
         <Breadcrumb
           items={[
             { title: <Link href="/">Dashboard</Link> },
             { title: <Link href="/jobs">Jobs</Link> },
             { title: vacancy.title },
           ]}
-          style={{ marginBottom: 24 }}
+          className={styles.breadcrumbMargin}
         />
 
-        <Card style={{ background: '#131b2e', borderColor: '#1e293b', marginBottom: 24 }}>
+        <Card className={styles.bannerCard}>
           <Row align="middle" justify="space-between" gutter={[16, 16]}>
             <Col xs={24} md={16}>
               <Space align="start" size={16}>
-                <Avatar size={64} style={{ backgroundColor: '#3b82f6', fontSize: 28 }}>
+                <Avatar size={64} className={styles.avatarCompany}>
                   {vacancy.company.charAt(0).toUpperCase()}
                 </Avatar>
                 <div>
-                  <Title level={2} style={{ color: '#fff', margin: 0 }}>
+                  <Title level={2} className={styles.roleTitle}>
                     {vacancy.title}
                   </Title>
-                  <Space size={16} style={{ marginTop: 8 }}>
-                    <Text strong style={{ color: '#f8fafc' }}>
+                  <Space size={16} className={styles.metaRow}>
+                    <Text strong className={styles.companyName}>
                       {vacancy.company}
                     </Text>
-                    <Text style={{ color: '#94a3b8' }}>
+                    <Text className={styles.locationText}>
                       <EnvironmentOutlined /> {vacancy.city || vacancy.country || 'Remote'}
                     </Text>
-                    <Text strong style={{ color: '#10b981' }}>
+                    <Text strong className={styles.salaryHighlight}>
                       {vacancy.salaryMin
                         ? `${vacancy.salaryMin.toLocaleString()} - ${vacancy.salaryMax?.toLocaleString() || ''} ${vacancy.currency}`
                         : 'Salary Not Disclosed'}
@@ -181,9 +181,9 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
               </Space>
             </Col>
 
-            <Col xs={24} md={8} style={{ textAlign: 'right' }}>
+            <Col xs={24} md={8} className={styles.actionCol}>
               <Space direction="vertical" align="end">
-                <Tag color="blue" style={{ padding: '6px 12px', fontSize: 14 }}>
+                <Tag color="blue" className={styles.sourceTag}>
                   {vacancy.source.toUpperCase()} • {vacancy.workFormat.toUpperCase()}
                 </Tag>
                 <Space>
@@ -211,22 +211,22 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
 
         <Row gutter={24}>
           <Col xs={24} md={16}>
-            <Card style={{ background: '#131b2e', borderColor: '#1e293b' }}>
-              <Title level={4} style={{ color: '#fff' }}>
+            <Card className={styles.detailCard}>
+              <Title level={4} className={styles.cardSectionTitle}>
                 Job Description
               </Title>
-              <Paragraph style={{ color: '#cbd5e1', fontSize: 16, whiteSpace: 'pre-line' }}>
+              <Paragraph className={styles.jobParagraph}>
                 {vacancy.description}
               </Paragraph>
 
-              <Divider style={{ borderColor: '#1e293b' }} />
+              <Divider className={styles.dividerDark} />
 
-              <Title level={4} style={{ color: '#fff' }}>
+              <Title level={4} className={styles.cardSectionTitle}>
                 Required Tech Stack & Skills
               </Title>
               <Space wrap size={8}>
                 {(vacancy.skills || []).map((skill) => (
-                  <Tag key={skill} color="geekblue" style={{ fontSize: 14, padding: '4px 10px' }}>
+                  <Tag key={skill} color="geekblue" className={styles.techTagLarge}>
                     {skill}
                   </Tag>
                 ))}
@@ -235,26 +235,26 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
           </Col>
 
           <Col xs={24} md={8}>
-            <Card style={{ background: '#131b2e', borderColor: '#1e293b' }}>
-              <Title level={4} style={{ color: '#fff' }}>
+            <Card className={styles.detailCard}>
+              <Title level={4} className={styles.cardSectionTitle}>
                 Job Metadata
               </Title>
-              <List size="small" style={{ color: '#cbd5e1' }}>
-                <List.Item style={{ borderColor: '#1e293b', color: '#cbd5e1' }}>
+              <List size="small" className={styles.metaList}>
+                <List.Item className={styles.metaListItem}>
                   <strong>Grade:</strong> {vacancy.grade}
                 </List.Item>
-                <List.Item style={{ borderColor: '#1e293b', color: '#cbd5e1' }}>
+                <List.Item className={styles.metaListItem}>
                   <strong>Employment Type:</strong> {vacancy.employmentType}
                 </List.Item>
-                <List.Item style={{ borderColor: '#1e293b', color: '#cbd5e1' }}>
+                <List.Item className={styles.metaListItem}>
                   <strong>Work Format:</strong> {vacancy.workFormat}
                 </List.Item>
-                <List.Item style={{ borderColor: '#1e293b', color: '#cbd5e1' }}>
+                <List.Item className={styles.metaListItem}>
                   <strong>Source:</strong> {vacancy.source}
                 </List.Item>
-                <List.Item style={{ borderColor: '#1e293b', color: '#cbd5e1' }}>
+                <List.Item className={styles.metaListItem}>
                   <strong>Original Posting:</strong>{' '}
-                  <a href={vacancy.url} target="_blank" rel="noreferrer" style={{ color: '#3b82f6' }}>
+                  <a href={vacancy.url} target="_blank" rel="noreferrer" className={styles.externalLink}>
                     Open External URL
                   </a>
                 </List.Item>
@@ -284,13 +284,13 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
             </Button>,
           ]}
         >
-          <Space direction="vertical" size={16} style={{ width: '100%' }}>
+          <Space direction="vertical" size={16} className={styles.fullWidthSpace}>
             <div>
-              <Text strong style={{ display: 'block', marginBottom: 6 }}>
+              <Text strong className={styles.fieldLabel}>
                 Select Candidate Resume:
               </Text>
               <Select
-                style={{ width: '100%' }}
+                className={styles.fullWidthSelect}
                 value={selectedResumeId}
                 onChange={(val) => setSelectedResumeId(val)}
               >
@@ -303,7 +303,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
             </div>
 
             <div>
-              <Text strong style={{ display: 'block', marginBottom: 6 }}>
+              <Text strong className={styles.fieldLabel}>
                 Custom Notes / Employer Instructions (Optional):
               </Text>
               <Input
@@ -333,8 +333,8 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
                   key: String(idx),
                   label: variant.title,
                   children: (
-                    <div style={{ background: '#0f172a', padding: 16, borderRadius: 8 }}>
-                      <div style={{ textAlign: 'right', marginBottom: 8 }}>
+                    <div className={styles.variantBox}>
+                      <div className={styles.variantHeader}>
                         <Button
                           size="small"
                           icon={<CopyOutlined />}
@@ -343,7 +343,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
                           Copy Text
                         </Button>
                       </div>
-                      <Paragraph style={{ color: '#f8fafc', whiteSpace: 'pre-line', margin: 0 }}>
+                      <Paragraph className={styles.variantContent}>
                         {variant.content}
                       </Paragraph>
                     </div>

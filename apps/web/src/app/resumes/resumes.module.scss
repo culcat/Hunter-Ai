@@ -1,0 +1,109 @@
+@use '../../styles/variables.scss' as *;
+
+.pageContainer {
+  background-color: #0a0f1d;
+  min-height: 100vh;
+  color: #fff;
+}
+
+.contentWrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.fullWidthSpace {
+  width: 100%;
+}
+
+.pageHeaderTitle {
+  color: #fff !important;
+  margin: 0 !important;
+}
+
+.pageHeaderSub {
+  color: #94a3b8 !important;
+  font-size: 16px;
+}
+
+.uploadCard {
+  background: #131b2e;
+  border-color: #1e293b;
+}
+
+.draggerArea {
+  background: #0f172a !important;
+  border-color: #334155 !important;
+  padding: 24px !important;
+}
+
+.uploadIcon {
+  font-size: 48px;
+  color: #3b82f6;
+}
+
+.uploadText {
+  color: #f8fafc !important;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.uploadHint {
+  color: #64748b !important;
+}
+
+.dividerDark {
+  border-color: #1e293b !important;
+}
+
+.sectionTitle {
+  color: #fff !important;
+}
+
+.resumeCard {
+  background: #131b2e;
+  border-color: #1e293b;
+  margin-bottom: 16px;
+}
+
+.resumeCardPrimary {
+  background: #131b2e;
+  border-color: #3b82f6;
+  margin-bottom: 16px;
+}
+
+.pdfIcon {
+  font-size: 32px;
+  color: #ef4444;
+}
+
+.resumeTitle {
+  color: #fff !important;
+  margin: 0 !important;
+}
+
+.resumeMeta {
+  color: #94a3b8;
+  display: block;
+}
+
+.highlightText {
+  color: #f8fafc;
+}
+
+.skillGroup {
+  margin-top: 12px;
+}
+
+.actionRightCol {
+  text-align: right;
+  margin-top: 16px;
+}
+
+.starIconActive {
+  color: #f59e0b;
+}
+
+.fullWidthInputNumber {
+  width: 100%;
+}

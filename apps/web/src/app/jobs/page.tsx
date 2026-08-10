@@ -25,9 +25,8 @@ import {
   EnvironmentOutlined,
   ArrowRightOutlined,
   PlusOutlined,
-  ThunderboltOutlined,
-  StarOutlined,
   AimOutlined,
+  StarOutlined,
   CheckCircleOutlined,
   CloseCircleOutlined,
 } from '@ant-design/icons';
@@ -40,6 +39,7 @@ import {
   useAddFavoriteMutation,
 } from '@/store/api/baseApi';
 import type { Vacancy, WorkFormat, GradeLevel, AiMatchResult } from '@hunter-ai/types';
+import styles from './jobs.module.scss';
 
 const { Title, Text, Paragraph } = Typography;
 const { Option } = Select;
@@ -110,21 +110,21 @@ export default function JobsPage() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0a0f1d', color: '#fff' }}>
+    <div className={styles.pageContainer}>
       <Header />
 
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '32px 24px' }}>
-        <Space direction="vertical" size={24} style={{ width: '100%' }}>
+      <div className={styles.contentWrapper}>
+        <Space direction="vertical" size={24} className={styles.fullWidthSpace}>
           <Row align="middle" justify="space-between">
             <Col xs={24} md={16}>
-              <Title level={2} style={{ color: '#fff', margin: 0 }}>
+              <Title level={2} className={styles.pageHeaderTitle}>
                 AI Vacancy Search & Scraper
               </Title>
-              <Paragraph style={{ color: '#94a3b8', fontSize: 16 }}>
+              <Paragraph className={styles.pageHeaderSub}>
                 Filter active software engineering roles or parse new postings from HeadHunter, Habr Career, GetMatch & corporate career sites.
               </Paragraph>
             </Col>
-            <Col xs={24} md={8} style={{ textAlign: 'right' }}>
+            <Col xs={24} md={8} className={styles.rightCol}>
               <Button
                 type="primary"
                 size="large"
@@ -137,13 +137,13 @@ export default function JobsPage() {
           </Row>
 
           {/* Filter Bar */}
-          <Card style={{ background: '#131b2e', borderColor: '#1e293b' }}>
+          <Card className={styles.filterCard}>
             <Row gutter={[16, 16]} align="middle">
               <Col xs={24} md={10}>
                 <Input
                   size="large"
                   placeholder="Search position, company, or stack (e.g. React, NestJS)..."
-                  prefix={<SearchOutlined style={{ color: '#64748b' }} />}
+                  prefix={<SearchOutlined className={styles.searchIcon} />}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
@@ -151,7 +151,7 @@ export default function JobsPage() {
               <Col xs={12} md={7}>
                 <Select
                   size="large"
-                  style={{ width: '100%' }}
+                  className={styles.fullWidthSelect}
                   placeholder="Work Format"
                   allowClear
                   value={workFormat}
@@ -165,7 +165,7 @@ export default function JobsPage() {
               <Col xs={12} md={7}>
                 <Select
                   size="large"
-                  style={{ width: '100%' }}
+                  className={styles.fullWidthSelect}
                   placeholder="Grade Level"
                   allowClear
                   value={grade}
@@ -185,20 +185,13 @@ export default function JobsPage() {
             loading={isLoading}
             dataSource={vacanciesData?.items || []}
             renderItem={(item) => (
-              <Card
-                key={item.id}
-                style={{
-                  background: '#131b2e',
-                  borderColor: '#1e293b',
-                  marginBottom: 16,
-                }}
-              >
+              <Card key={item.id} className={styles.vacancyCard}>
                 <Row align="middle" justify="space-between">
                   <Col xs={24} md={16}>
                     <Space direction="vertical" size={6}>
                       <Space align="center" wrap>
-                        <Title level={4} style={{ color: '#fff', margin: 0 }}>
-                          <Link href={`/jobs/${item.id}`} style={{ color: '#f8fafc' }}>
+                        <Title level={4} className={styles.vacancyTitle}>
+                          <Link href={`/jobs/${item.id}`} className={styles.vacancyTitleLink}>
                             {item.title}
                           </Link>
                         </Title>
@@ -207,20 +200,17 @@ export default function JobsPage() {
                         <Tag color="cyan">{item.workFormat.toUpperCase()}</Tag>
                       </Space>
 
-                      <Text style={{ color: '#94a3b8' }}>
-                        Company: <strong style={{ color: '#cbd5e1' }}>{item.company}</strong> • Location: <EnvironmentOutlined /> {item.city || item.country || 'Remote'} • Salary: {item.salaryMin ? `${item.salaryMin.toLocaleString()} - ${item.salaryMax?.toLocaleString() || ''} ${item.currency}` : 'Salary not disclosed'}
+                      <Text className={styles.vacancyMeta}>
+                        Company: <strong className={styles.companyHighlight}>{item.company}</strong> • Location: <EnvironmentOutlined /> {item.city || item.country || 'Remote'} • Salary: {item.salaryMin ? `${item.salaryMin.toLocaleString()} - ${item.salaryMax?.toLocaleString() || ''} ${item.currency}` : 'Salary not disclosed'}
                       </Text>
 
-                      <Paragraph
-                        style={{ color: '#cbd5e1', margin: '4px 0' }}
-                        ellipsis={{ rows: 2 }}
-                      >
+                      <Paragraph className={styles.vacancyDesc} ellipsis={{ rows: 2 }}>
                         {item.description}
                       </Paragraph>
 
-                      <Space size={6} wrap style={{ marginTop: 6 }}>
+                      <Space size={6} wrap className={styles.tagSpace}>
                         {(item.skills || []).map((tech) => (
-                          <Tag key={tech} color="geekblue">
+                          <Tag key={tech} className={styles.techTag}>
                             {tech}
                           </Tag>
                         ))}
@@ -228,8 +218,8 @@ export default function JobsPage() {
                     </Space>
                   </Col>
 
-                  <Col xs={24} md={8} style={{ textAlign: 'right', marginTop: 16 }}>
-                    <Space direction="vertical" size={12} style={{ width: '100%', alignItems: 'flex-end' }}>
+                  <Col xs={24} md={8} className={styles.actionRightCol}>
+                    <Space direction="vertical" size={12} className={styles.actionStackEnd}>
                       <Space>
                         <Button
                           icon={<StarOutlined />}
@@ -298,20 +288,20 @@ export default function JobsPage() {
         onClose={() => setMatchDrawerVacancy(null)}
       >
         {matchDrawerVacancy && (
-          <Space direction="vertical" size={20} style={{ width: '100%' }}>
+          <Space direction="vertical" size={20} className={styles.drawerContentSpace}>
             <div>
-              <Title level={4} style={{ margin: 0 }}>
+              <Title level={4} className={styles.drawerTitle}>
                 {matchDrawerVacancy.title}
               </Title>
               <Text type="secondary">{matchDrawerVacancy.company}</Text>
             </div>
 
             <div>
-              <Text strong style={{ display: 'block', marginBottom: 8 }}>
+              <Text strong className={styles.fieldLabelBlock}>
                 Select Candidate Resume:
               </Text>
               <Select
-                style={{ width: '100%' }}
+                className={styles.fullWidthSelect}
                 value={selectedResumeId}
                 onChange={(val) => {
                   setSelectedResumeId(val);
@@ -329,44 +319,44 @@ export default function JobsPage() {
             {isEvaluating ? (
               <Paragraph>Evaluating candidate alignment...</Paragraph>
             ) : matchResult ? (
-              <Card style={{ background: '#0f172a', borderColor: '#1e293b' }}>
-                <div style={{ textAlign: 'center', marginBottom: 16 }}>
+              <Card className={styles.matchCard}>
+                <div className={styles.matchScoreHeader}>
                   <Progress
                     type="dashboard"
                     percent={matchResult.score}
                     strokeColor={matchResult.score >= 70 ? '#10b981' : '#f59e0b'}
                   />
-                  <Title level={4} style={{ color: '#f8fafc', margin: '8px 0' }}>
+                  <Title level={4} className={styles.matchScoreTitle}>
                     {matchResult.score}% Compatibility Score
                   </Title>
-                  <Text style={{ color: '#94a3b8' }}>{matchResult.recommendation}</Text>
+                  <Text className={styles.matchScoreSub}>{matchResult.recommendation}</Text>
                 </div>
 
-                <Divider style={{ borderColor: '#334155' }} />
+                <Divider className={styles.dividerDark} />
 
-                <Title level={5} style={{ color: '#10b981' }}>
+                <Title level={5} className={styles.greenTitle}>
                   <CheckCircleOutlined /> Key Strengths
                 </Title>
                 <List
                   size="small"
                   dataSource={matchResult.strengths}
-                  renderItem={(s) => <List.Item style={{ color: '#cbd5e1' }}>• {s}</List.Item>}
+                  renderItem={(s) => <List.Item className={styles.listItemText}>• {s}</List.Item>}
                 />
 
-                <Divider style={{ borderColor: '#334155' }} />
+                <Divider className={styles.dividerDark} />
 
-                <Title level={5} style={{ color: '#ef4444' }}>
+                <Title level={5} className={styles.redTitle}>
                   <CloseCircleOutlined /> Areas for Improvement
                 </Title>
                 <List
                   size="small"
                   dataSource={matchResult.weaknesses}
-                  renderItem={(w) => <List.Item style={{ color: '#cbd5e1' }}>• {w}</List.Item>}
+                  renderItem={(w) => <List.Item className={styles.listItemText}>• {w}</List.Item>}
                 />
 
                 {matchResult.missingSkills.length > 0 && (
-                  <div style={{ marginTop: 12 }}>
-                    <Text strong style={{ color: '#f8fafc', display: 'block', marginBottom: 6 }}>
+                  <div className={styles.missingSkillsContainer}>
+                    <Text strong className={styles.fieldLabelBlockSm}>
                       Missing Required Skills:
                     </Text>
                     <Space wrap>

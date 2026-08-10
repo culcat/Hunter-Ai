@@ -158,7 +158,7 @@ export const Header = () => {
             {isRegisterMode ? 'Register Account' : 'Sign In'}
           </Button>
 
-          <div style={{ textAlign: 'center', marginTop: 16 }}>
+          <div className={styles.authModalFooter}>
             <Button
               type="link"
               onClick={() => setIsRegisterMode(!isRegisterMode)}

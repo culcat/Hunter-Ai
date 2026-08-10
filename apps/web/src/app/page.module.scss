@@ -1,7 +1,7 @@
 @use '../styles/variables.scss' as *;
 
 .dashboardContainer {
-  background-color: $bg-light;
+  background-color: #0a0f1d;
   min-height: 100vh;
 }
 
@@ -16,6 +16,7 @@
   background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
   color: #ffffff;
   border-radius: 12px;
+  border: 1px solid #1e293b;
 }
 
 .heroBadge {
@@ -39,80 +40,120 @@
   margin-top: 16px;
 }
 
+.fullWidthSpace {
+  width: 100%;
+}
+
 .heroButton {
   background-color: #3b82f6;
 }
 
-.gridRow {
+.statsRow {
   margin-bottom: 24px;
 }
 
 .statCard {
   border-radius: 8px;
+  background: #131b2e;
+  border-color: #1e293b;
 }
 
-.iconPrimary {
+.statTitle {
+  color: #94a3b8;
+}
+
+.statValue {
+  color: #f8fafc !important;
+  font-weight: 700;
+}
+
+.iconBlue {
   color: #3b82f6;
 }
 
-.iconSuccess {
+.iconGreen {
   color: #10b981;
 }
 
-.iconWarning {
-  color: #f59e0b;
+.iconYellow {
+  color: #eab308;
 }
 
 .iconPurple {
-  color: #8b5cf6;
+  color: #a855f7;
 }
 
-.statProgress {
-  margin-top: 8px;
+.sectionCard {
+  background: #131b2e;
+  border-color: #1e293b;
 }
 
-.statSubtext {
-  font-size: 12px;
-}
-
-.matchTag {
-  font-size: 14px;
-  padding: 4px 12px;
-  border-radius: 4px;
-}
-
-.salaryText {
-  color: #0f172a;
-}
-
-.jobTitleLink {
-  font-size: 16px;
-  color: #0f172a;
+.cardHeaderTitle {
+  color: #f8fafc;
   font-weight: 600;
 }
 
-.techTag {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
+.viewAllLink {
+  color: #3b82f6;
+}
+
+.loadingSpinner {
+  text-align: center;
+  padding: 40px 0;
+}
+
+.jobListItem {
+  border-bottom: 1px solid #1e293b !important;
+}
+
+.companyAvatar {
+  background-color: #3b82f6;
+}
+
+.jobTitle {
+  margin: 0 !important;
+  color: #f8fafc !important;
+}
+
+.jobMeta {
+  color: #94a3b8;
+}
+
+.companyText {
+  color: #cbd5e1;
+}
+
+.salaryText {
+  color: #10b981;
+  font-weight: 600;
 }
 
 .tagGroup {
   margin-top: 8px;
 }
 
-.tipItem {
-  padding: 12px 0;
+.techTag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  background: #1e293b;
+  border-color: #334155;
+  color: #cbd5e1;
 }
 
-.tipTitle {
-  display: block;
-  font-size: 14px;
-}
-
-.tipDesc {
-  font-size: 13px;
-}
-
-.actionButtonBlock {
+.jobActionCol {
+  text-align: right;
   margin-top: 12px;
+}
+
+.profileTitle {
+  color: #f8fafc;
+  font-weight: 600;
+}
+
+.profileDesc {
+  color: #cbd5e1;
+}
+
+.tagSpace {
+  margin-top: 8px;
 }

@@ -1,0 +1,68 @@
+@use '../../styles/variables.scss' as *;
+
+.pageContainer {
+  background-color: #0a0f1d;
+  min-height: 100vh;
+  color: #fff;
+}
+
+.contentWrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.fullWidthSpace {
+  width: 100%;
+}
+
+.pageHeaderTitle {
+  color: #fff !important;
+  margin: 0 !important;
+}
+
+.pageHeaderSub {
+  color: #94a3b8 !important;
+  font-size: 16px;
+}
+
+.tabTitle {
+  font-size: 16px;
+}
+
+.starIconActive {
+  color: #f59e0b;
+}
+
+.appCard {
+  background: #131b2e;
+  border-color: #1e293b;
+  margin-bottom: 16px;
+}
+
+.appTitle {
+  color: #fff !important;
+  margin: 0 !important;
+}
+
+.metaText {
+  color: #94a3b8;
+}
+
+.highlightText {
+  color: #f8fafc;
+}
+
+.notesText {
+  color: #cbd5e1;
+  font-style: italic;
+}
+
+.actionRightCol {
+  text-align: right;
+  margin-top: 16px;
+}
+
+.statusSelect {
+  width: 140px;
+}

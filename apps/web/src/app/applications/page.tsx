@@ -33,6 +33,7 @@ import {
   useRemoveFavoriteMutation,
 } from '@/store/api/baseApi';
 import type { ApplicationStatus } from '@hunter-ai/types';
+import styles from './applications.module.scss';
 
 const { Title, Text, Paragraph } = Typography;
 const { Option } = Select;
@@ -105,16 +106,16 @@ export default function ApplicationsPage() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0a0f1d', color: '#fff' }}>
+    <div className={styles.pageContainer}>
       <Header />
 
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '32px 24px' }}>
-        <Space direction="vertical" size={24} style={{ width: '100%' }}>
+      <div className={styles.contentWrapper}>
+        <Space direction="vertical" size={24} className={styles.fullWidthSpace}>
           <div>
-            <Title level={2} style={{ color: '#fff', margin: 0 }}>
+            <Title level={2} className={styles.pageHeaderTitle}>
               Job Applications & Saved Vacancies
             </Title>
-            <Paragraph style={{ color: '#94a3b8', fontSize: 16 }}>
+            <Paragraph className={styles.pageHeaderSub}>
               Track your hiring pipeline, interview stages, cover letter notes, and bookmarked jobs.
             </Paragraph>
           </div>
@@ -125,7 +126,7 @@ export default function ApplicationsPage() {
               {
                 key: 'applications',
                 label: (
-                  <span style={{ fontSize: 16 }}>
+                  <span className={styles.tabTitle}>
                     <FolderOpenOutlined /> Applications Pipeline ({applications?.length || 0})
                   </span>
                 ),
@@ -134,41 +135,34 @@ export default function ApplicationsPage() {
                     loading={isAppLoading}
                     dataSource={applications || []}
                     renderItem={(item) => (
-                      <Card
-                        key={item.id}
-                        style={{
-                          background: '#131b2e',
-                          borderColor: '#1e293b',
-                          marginBottom: 16,
-                        }}
-                      >
+                      <Card key={item.id} className={styles.appCard}>
                         <Row align="middle" justify="space-between">
                           <Col xs={24} md={14}>
                             <Space direction="vertical" size={4}>
                               <Space align="center">
-                                <Title level={4} style={{ color: '#fff', margin: 0 }}>
+                                <Title level={4} className={styles.appTitle}>
                                   {item.vacancy?.title || 'Applied Position'}
                                 </Title>
                                 <Tag color={statusColors[item.status]}>
                                   {item.status.toUpperCase()}
                                 </Tag>
                               </Space>
-                              <Text style={{ color: '#94a3b8' }}>
-                                Company: <strong style={{ color: '#f8fafc' }}>{item.vacancy?.company || 'N/A'}</strong> • Applied on: {new Date(item.appliedAt).toLocaleDateString()}
+                              <Text className={styles.metaText}>
+                                Company: <strong className={styles.highlightText}>{item.vacancy?.company || 'N/A'}</strong> • Applied on: {new Date(item.appliedAt).toLocaleDateString()}
                               </Text>
                               {item.notes && (
-                                <Text style={{ color: '#cbd5e1', fontStyle: 'italic' }}>
+                                <Text className={styles.notesText}>
                                   Notes: {item.notes}
                                 </Text>
                               )}
                             </Space>
                           </Col>
 
-                          <Col xs={24} md={10} style={{ textAlign: 'right', marginTop: 16 }}>
+                          <Col xs={24} md={10} className={styles.actionRightCol}>
                             <Space wrap>
                               <Select
                                 value={item.status}
-                                style={{ width: 140 }}
+                                className={styles.statusSelect}
                                 onChange={(val) => handleStatusChange(item.id, val)}
                               >
                                 <Option value="applied">Applied</Option>
@@ -205,8 +199,8 @@ export default function ApplicationsPage() {
               {
                 key: 'favorites',
                 label: (
-                  <span style={{ fontSize: 16 }}>
-                    <StarFilled style={{ color: '#f59e0b' }} /> Saved Favorites ({favorites?.length || 0})
+                  <span className={styles.tabTitle}>
+                    <StarFilled className={styles.starIconActive} /> Saved Favorites ({favorites?.length || 0})
                   </span>
                 ),
                 children: (
@@ -214,25 +208,18 @@ export default function ApplicationsPage() {
                     loading={isFavLoading}
                     dataSource={favorites || []}
                     renderItem={(item) => (
-                      <Card
-                        key={item.id}
-                        style={{
-                          background: '#131b2e',
-                          borderColor: '#1e293b',
-                          marginBottom: 16,
-                        }}
-                      >
+                      <Card key={item.id} className={styles.appCard}>
                         <Row align="middle" justify="space-between">
                           <Col xs={24} md={16}>
-                            <Title level={4} style={{ color: '#fff', margin: 0 }}>
+                            <Title level={4} className={styles.appTitle}>
                               {item.vacancy?.title || 'Saved Vacancy'}
                             </Title>
-                            <Text style={{ color: '#94a3b8' }}>
-                              Company: <strong style={{ color: '#f8fafc' }}>{item.vacancy?.company}</strong> • Format: {item.vacancy?.workFormat}
+                            <Text className={styles.metaText}>
+                              Company: <strong className={styles.highlightText}>{item.vacancy?.company}</strong> • Format: {item.vacancy?.workFormat}
                             </Text>
                           </Col>
 
-                          <Col xs={24} md={8} style={{ textAlign: 'right', marginTop: 16 }}>
+                          <Col xs={24} md={8} className={styles.actionRightCol}>
                             <Space>
                               <Button
                                 type="primary"
