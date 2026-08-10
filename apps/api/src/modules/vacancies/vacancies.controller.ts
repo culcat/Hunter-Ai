@@ -28,11 +28,11 @@ export class VacanciesController {
   }
 
   @Post('parse')
-  @ApiOperation({ summary: 'Trigger AI / Scraper parser for target URL or career portal' })
+  @ApiOperation({ summary: 'Trigger AI / Scraper parser for target keyword or career portal' })
   parse(
     @Body('target') target: string,
     @Body('source') source?: 'headhunter' | 'habr' | 'getmatch' | 'custom',
   ) {
-    return this.vacanciesService.parseAndSaveVacancies(target || 'https://hh.ru', source);
+    return this.vacanciesService.parseAndSaveVacancies(target || 'Frontend', source);
   }
 }

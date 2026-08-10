@@ -252,28 +252,29 @@ export default function JobsPage() {
 
       {/* Modal: Parse Vacancies */}
       <Modal
-        title="Parse Vacancies via Automated Scraper"
+        title="Парсинг новых вакансий по ключевому слову"
         open={parseModalVisible}
         onCancel={() => setParseModalVisible(false)}
         onOk={() => parseForm.submit()}
         confirmLoading={isParsing}
-        okText="Start Scraper"
+        okText="Запустить парсинг"
       >
         <Form form={parseForm} layout="vertical" onFinish={handleParseSubmit}>
           <Form.Item
             name="target"
-            label="Target URL or Career Site Keyword"
-            rules={[{ required: true, message: 'Please enter target URL' }]}
+            label="Ключевое слово для поиска вакансий"
+            rules={[{ required: true, message: 'Пожалуйста, введите ключевое слово' }]}
+            extra="Введите профессию или стек технологий (например, React, NestJS, Python, Frontend, DevOps). Парсер автоматически соберет вакансии с HH.ru, Хабр Карьеры и карьерных порталов."
           >
-            <Input placeholder="https://hh.ru/vacancy/1234567 or corporate site URL" />
+            <Input size="large" placeholder="Например: React Developer, Python, NestJS, DevOps..." />
           </Form.Item>
 
-          <Form.Item name="source" label="Source Parser Engine">
-            <Select placeholder="Auto-detect source">
-              <Option value="headhunter">HeadHunter (HH.ru API/HTML)</Option>
-              <Option value="habr">Habr Career Parser</Option>
-              <Option value="getmatch">GetMatch Parser</Option>
-              <Option value="custom">Playwright Browser Scraper (Corporate Portals)</Option>
+          <Form.Item name="source" label="Источник или движок парсинга">
+            <Select size="large" placeholder="Все источники (Авто-определение)" allowClear>
+              <Option value="headhunter">HeadHunter (HH.ru API)</Option>
+              <Option value="habr">Хабр Карьера</Option>
+              <Option value="getmatch">GetMatch</Option>
+              <Option value="custom">Playwright Browser Scraper (Карьерные сайты IT-компаний)</Option>
             </Select>
           </Form.Item>
         </Form>

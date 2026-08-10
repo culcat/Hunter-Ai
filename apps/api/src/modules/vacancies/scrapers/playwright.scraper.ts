@@ -3,7 +3,8 @@ import { chromium, Browser, Page } from 'playwright';
 import { CreateVacancyDto, WorkFormat, GradeLevel, EmploymentType } from '@hunter-ai/types';
 
 export interface ScrapeTargetConfig {
-  url: string;
+  url?: string;
+  keyword?: string;
   companyName?: string;
   requiresAuth?: boolean;
   authConfig?: {
@@ -39,9 +40,18 @@ export class PlaywrightScraper {
   private readonly logger = new Logger(PlaywrightScraper.name);
 
   async scrapeTarget(config: ScrapeTargetConfig): Promise<CreateVacancyDto[]> {
-    const targetUrl = config.url;
-    const companyName = config.companyName || this.extractCompanyName(targetUrl);
-    this.logger.log(`[Playwright] Starting scrape for ${companyName} (${targetUrl})`);
+    let targetUrl = config.url || '';
+    const rawInput = config.keyword || config.url || 'Frontend';
+    const isUrl = rawInput.startsWith('http://') || rawInput.startsWith('https://');
+    const keyword = isUrl ? this.extractKeywordFromUrl(rawInput) : rawInput.trim();
+
+    if (!isUrl) {
+      targetUrl = `https://hh.ru/search/vacancy?text=${encodeURIComponent(keyword)}`;
+    }
+
+    const companyName = config.companyName || (isUrl ? this.extractCompanyName(targetUrl) : `Career Portal (${keyword})`);
+    this.logger.log(`[Playwright] Starting keyword scrape for "${keyword}" at ${targetUrl}`);
+
 
     let browser: Browser | null = null;
     const vacancies: CreateVacancyDto[] = [];
@@ -380,6 +390,15 @@ export class PlaywrightScraper {
       .replace(/\s+/g, ' ')
       .trim()
       .substring(0, 1500);
+  }
+
+  private extractKeywordFromUrl(url: string): string {
+    try {
+      const u = new URL(url);
+      const text = u.searchParams.get('text') || u.searchParams.get('q') || u.searchParams.get('query');
+      if (text) return text;
+    } catch {}
+    return 'Developer';
   }
 
   private sanitizeCode(str: string): string {
