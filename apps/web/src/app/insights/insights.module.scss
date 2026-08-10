@@ -1,0 +1,90 @@
+@use '../../styles/variables.scss' as *;
+
+.pageContainer {
+  background-color: $bg-light;
+  min-height: 100vh;
+}
+
+.contentWrapper {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.breadcrumbMargin {
+  margin-bottom: 16px;
+}
+
+.pageHeader {
+  margin-bottom: 24px;
+}
+
+.pageTitle {
+  margin: 0 !important;
+  color: #0f172a;
+}
+
+.summaryRow {
+  margin-bottom: 24px;
+}
+
+.cardRounded {
+  border-radius: 8px;
+}
+
+.statSubtext {
+  font-size: 12px;
+}
+
+.dollarPrefix {
+  font-size: 20px;
+  color: #3b82f6;
+  font-weight: 700;
+}
+
+.statProgress {
+  margin-top: 8px;
+}
+
+.iconPrimary {
+  color: #3b82f6;
+}
+
+.iconSuccess {
+  color: #10b981;
+}
+
+.iconPurple {
+  color: #8b5cf6;
+}
+
+.iconWarning {
+  color: #f59e0b;
+}
+
+.tableSkillFont {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+}
+
+.gridMarginBottom {
+  margin-bottom: 24px;
+}
+
+.actionItem {
+  padding: 12px 0;
+}
+
+.actionTitle {
+  display: block;
+  font-size: 14px;
+}
+
+.actionDesc {
+  font-size: 13px;
+}
+
+.bookIcon {
+  color: #3b82f6;
+  margin-top: 4px;
+}

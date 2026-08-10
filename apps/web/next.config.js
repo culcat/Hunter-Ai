@@ -4,7 +4,6 @@ const path = require('path');
 const nextConfig = {
   reactStrictMode: true,
   transpilePackages: ['@hunter-ai/types', 'antd', '@ant-design/nextjs-registry'],
-  outputFileTracingRoot: path.join(__dirname, '../../'),
   sassOptions: {
     includePaths: [path.join(__dirname, 'src/styles')],
   },

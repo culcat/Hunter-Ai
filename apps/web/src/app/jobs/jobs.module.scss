@@ -1,0 +1,85 @@
+@use '../../styles/variables.scss' as *;
+
+.pageContainer {
+  background-color: $bg-light;
+  min-height: 100vh;
+}
+
+.contentWrapper {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.breadcrumbMargin {
+  margin-bottom: 16px;
+}
+
+.pageHeader {
+  margin-bottom: 24px;
+}
+
+.pageTitle {
+  margin: 0 !important;
+  color: #0f172a;
+}
+
+.cardRounded {
+  border-radius: 8px;
+}
+
+.iconPrimary {
+  color: #3b82f6;
+}
+
+.fieldLabel {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.remoteSwitchRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.listItem {
+  padding: 24px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.matchScoreTag {
+  font-size: 14px;
+  padding: 4px 12px;
+  font-weight: 600;
+}
+
+.salaryText {
+  font-size: 16px;
+  color: #0f172a;
+}
+
+.avatarCompany {
+  background-color: #0f172a;
+  font-weight: 700;
+}
+
+.roleTitleLink {
+  font-size: 18px;
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.companyMetaRow {
+  margin-top: 4px;
+}
+
+.jobDescription {
+  margin: 12px 0 !important;
+}
+
+.techTag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+}

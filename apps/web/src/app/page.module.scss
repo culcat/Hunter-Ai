@@ -1,0 +1,118 @@
+@use '../styles/variables.scss' as *;
+
+.dashboardContainer {
+  background-color: $bg-light;
+  min-height: 100vh;
+}
+
+.contentWrapper {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.heroCard {
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: #ffffff;
+  border-radius: 12px;
+}
+
+.heroBadge {
+  font-family: 'JetBrains Mono', monospace;
+  border-radius: 4px;
+}
+
+.heroTitle {
+  color: #ffffff !important;
+  margin: 0 !important;
+}
+
+.heroSubtitle {
+  color: #94a3b8 !important;
+  font-size: 16px;
+  margin: 0 !important;
+}
+
+.heroActionCol {
+  text-align: right;
+  margin-top: 16px;
+}
+
+.heroButton {
+  background-color: #3b82f6;
+}
+
+.gridRow {
+  margin-bottom: 24px;
+}
+
+.statCard {
+  border-radius: 8px;
+}
+
+.iconPrimary {
+  color: #3b82f6;
+}
+
+.iconSuccess {
+  color: #10b981;
+}
+
+.iconWarning {
+  color: #f59e0b;
+}
+
+.iconPurple {
+  color: #8b5cf6;
+}
+
+.statProgress {
+  margin-top: 8px;
+}
+
+.statSubtext {
+  font-size: 12px;
+}
+
+.matchTag {
+  font-size: 14px;
+  padding: 4px 12px;
+  border-radius: 4px;
+}
+
+.salaryText {
+  color: #0f172a;
+}
+
+.jobTitleLink {
+  font-size: 16px;
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.techTag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+}
+
+.tagGroup {
+  margin-top: 8px;
+}
+
+.tipItem {
+  padding: 12px 0;
+}
+
+.tipTitle {
+  display: block;
+  font-size: 14px;
+}
+
+.tipDesc {
+  font-size: 13px;
+}
+
+.actionButtonBlock {
+  margin-top: 12px;
+}

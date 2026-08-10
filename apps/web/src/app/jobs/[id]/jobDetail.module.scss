@@ -1,0 +1,116 @@
+@use '../../../styles/variables.scss' as *;
+
+.pageContainer {
+  background-color: $bg-light;
+  min-height: 100vh;
+}
+
+.contentWrapper {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.breadcrumbMargin {
+  margin-bottom: 16px;
+}
+
+.bannerCard {
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+
+.avatarCompany {
+  background-color: #0f172a;
+  font-weight: 700;
+  font-size: 24px;
+}
+
+.roleTitle {
+  margin: 0 !important;
+  color: #0f172a;
+}
+
+.metaRow {
+  margin-top: 8px;
+}
+
+.salaryHighlight {
+  color: #10b981;
+}
+
+.actionCol {
+  text-align: right;
+}
+
+.matchTag {
+  font-size: 16px;
+  padding: 6px 16px;
+  font-weight: 700;
+  border-radius: 4px;
+}
+
+.applyButton {
+  background-color: #3b82f6;
+}
+
+.mainCard {
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+
+.jobParagraph {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.techTag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  padding: 4px 10px;
+}
+
+.techTagGroup {
+  margin-bottom: 24px;
+}
+
+.checkIcon {
+  color: #10b981;
+  margin-top: 4px;
+}
+
+.respItem {
+  padding: 8px 0;
+  border: none;
+}
+
+.respText {
+  font-size: 15px;
+}
+
+.sidebarCard {
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+
+.purpleIcon {
+  color: #8b5cf6;
+}
+
+.dividerMargin {
+  margin: 12px 0;
+}
+
+.edgeTitle {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.edgeItem {
+  padding: 4px 0;
+  border: none;
+}
+
+.edgeText {
+  font-size: 13px;
+}
