@@ -1,8 +1,9 @@
 @use '../../styles/variables.scss' as *;
 
 .pageContainer {
-  background-color: $bg-light;
+  background-color: #0a0f1d;
   min-height: 100vh;
+  color: #fff;
 }
 
 .contentWrapper {

@@ -2,7 +2,9 @@
 
 .dashboardContainer {
   background-color: #0a0f1d;
-  min-height: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .contentWrapper {

@@ -6,9 +6,11 @@
   padding: 0;
 }
 
+html,
 body {
   font-family: $font-family;
-  background-color: $bg-light;
-  color: $text-dark;
+  background-color: $bg-dark;
+  color: $text-light;
   min-height: 100vh;
+  width: 100%;
 }
