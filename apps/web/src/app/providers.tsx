@@ -1,20 +1,20 @@
 'use client';
 
-import React from 'react';
+import type { ReactNode } from 'react';
 import { AntdRegistry } from '@ant-design/nextjs-registry';
 import { ConfigProvider, theme } from 'antd';
 import { Provider } from 'react-redux';
 import { store } from '@/store/store';
 
-export function Providers({ children }: { children: React.ReactNode }) {
+export function Providers({ children }: { children: ReactNode }) {
   return (
     <Provider store={store}>
       <AntdRegistry>
         <ConfigProvider
           theme={{
-            algorithm: theme.defaultAlgorithm,
+            algorithm: theme.darkAlgorithm,
             token: {
-              colorPrimary: '#1677ff',
+              colorPrimary: '#3b82f6',
               borderRadius: 8,
             },
           }}

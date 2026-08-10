@@ -1,6 +1,6 @@
 # Project Documentation & Architecture Overview
 
-Welcome to the **Hunter-Ai** monorepository project documentation. This document provides a comprehensive overview of the full-stack architecture, repository structure, backend services, developer workflows, and AI agent guidelines.
+Welcome to the **Hunter-Ai** monorepository project documentation. This document provides a comprehensive overview of the full-stack architecture, repository structure, backend services, frontend Next.js application, developer workflows, and AI agent guidelines.
 
 ---
 
@@ -30,9 +30,8 @@ Hunter-Ai/
 | :--- | :--- | :--- |
 | **Monorepo Manager** | Yarn Workspaces + Turborepo | Parallel task runner, caching, cross-package linking |
 | **Frontend App (`apps/web`)** | Next.js 15 + React 19 | App Router, SSR, AntD Registry integration |
-| **UI Library** | Ant Design (`antd` v5+) | `ConfigProvider` theme customization, custom UI components |
-| **Frontend State & Fetching** | Redux Toolkit & RTK Query | Centralized store & API mutation caching |
-| **Frontend Styling** | SCSS Modules | Scoped component styles (`*.module.scss`) |
+| **UI Library** | Ant Design (`antd` v5+) | Dark theme algorithm (`ConfigProvider`), custom UI components |
+| **Frontend State & Fetching** | Redux Toolkit & RTK Query | Centralized store (`baseApi.ts`) with automatic Bearer token headers & tag invalidation |
 | **Backend Framework (`apps/api`)** | NestJS (v10+) | Feature-based modules, Dependency Injection, Clean Architecture |
 | **Database & ORM** | SQLite + TypeORM | Relational database with multi-indexed entities (`User`, `Resume`, `Vacancy`, `JobApplication`, `FavoriteVacancy`) |
 | **Document Processing & Scrapers** | `pdf-parse`, `playwright` | PDF resume parsing, automated scrapers for HeadHunter, Habr Career, GetMatch, corporate portals |
@@ -42,59 +41,27 @@ Hunter-Ai/
 
 ---
 
-## 🚀 Backend System Architecture (`apps/api`)
+## 🌐 Frontend Next.js 15 Application (`apps/web`)
 
-The backend is built as a domain-driven NestJS server following Clean Architecture:
+The client application connects to the NestJS API via Next.js rewrites (`/api/*` -> `http://localhost:3001/api/*`) and RTK Query (`src/store/api/baseApi.ts`):
 
-```
-apps/api/src/
-├── database/                   # DatabaseModule registering TypeORM SQLite setup
-├── modules/
-│   ├── auth/                   # JWT Auth, Register, Login, CurrentUser decorator, JwtAuthGuard
-│   ├── users/                  # User entity & account services
-│   ├── resumes/                # PDF upload, PDF text extraction, structured JSON parser, manual editing CRUD
-│   ├── vacancies/              # Multi-parameter filter engine, HeadHunter, Habr, GetMatch & Playwright scrapers
-│   ├── ai-match/               # Resume vs Vacancy matching engine (% score, strengths, weaknesses, missing skills)
-│   ├── cover-letters/          # Multi-variant cover letter generator (Short, Tech-detailed, Product-impact)
-│   └── applications/           # Kanban job application status tracking pipeline & job favorites
-├── app.module.ts               # Root module aggregating feature modules
-└── main.ts                     # NestJS bootstrap, Swagger OpenAPI docs, validation pipe
-```
-
-### Key API Endpoints & Capabilities
-
-#### 1. Authentication & Users (`/api/auth`, `/api/users`)
-- `POST /api/auth/register` --- User account creation with password hashing (`bcrypt`).
-- `POST /api/auth/login` --- JWT token issuance.
-- `GET /api/auth/me` --- Returns current user profile.
-
-#### 2. Resumes & PDF Parsing (`/api/resumes`)
-- `POST /api/resumes/upload` --- Multipart PDF file upload & automatic structured JSON extraction (`position`, `grade`, `totalExperienceMonths`, `skills`, `education`, `englishLevel`, `projects`, `workExperience`, `summary`).
-- `GET /api/resumes`, `GET /api/resumes/:id` --- Retrieve candidate resumes.
-- `PUT /api/resumes/:id` --- Manual editing of parsed JSON resume fields.
-
-#### 3. Vacancies & Parsing Engine (`/api/vacancies`)
-- `GET /api/vacancies` --- Multi-parameter filter query engine:
-  - Location: `country`, `region`, `city`
-  - Work Format: `remote`, `office`, `hybrid`
-  - Salary range: `salaryFrom`, `salaryTo`, `onlyWithSalary`
-  - Stack & Grade: `techStack`, `grade`, `company`, `employmentType`, `englishLevel`
-  - Date & Search: `publishedAfter`, `searchQuery`
-- `POST /api/vacancies/parse` --- Triggers scraping and parsing from HeadHunter, Habr Career, GetMatch, or Playwright dynamic web page scraper.
-
-#### 4. AI Match Engine (`/api/ai-match`)
-- `POST /api/ai-match/evaluate` --- Evaluates resume vs vacancy compatibility returning match score %, strengths, weaknesses, missing skills, and strategic recommendations.
-
-#### 5. Cover Letter Generator (`/api/cover-letters`)
-- `POST /api/cover-letters/generate` --- Generates 3 tailored cover letter variants:
-  1. *Short & Direct*
-  2. *Technical & Detailed*
-  3. *Product & Impact Focus*
-
-#### 6. Job Applications & Favorites (`/api/applications`, `/api/favorites`)
-- `GET /api/applications`, `POST /api/applications` --- Application tracking pipeline.
-- `PATCH /api/applications/:id/status` --- Updates Kanban status (`applied`, `screening`, `interview`, `offer`, `rejected`).
-- `GET /api/favorites`, `POST /api/favorites/:vacancyId`, `DELETE /api/favorites/:vacancyId` --- Job bookmarking.
+### Connected Frontend Routes:
+1. **`/` (Dashboard)**: Displays live active vacancy counts, candidate application metrics, primary candidate CV alignment, and recent job recommendations.
+2. **`/jobs` (Vacancy Search & AI Match)**:
+   - Filter jobs by keyword, work format (`remote`/`office`/`hybrid`), and grade level.
+   - **Parse New Vacancies**: Modal triggering HeadHunter, Habr Career, GetMatch, or Playwright corporate site scrapers.
+   - **AI Match Analysis**: Drawer calculating score %, strengths, weaknesses, and missing skills against candidate resume.
+3. **`/jobs/[id]` (Vacancy Details & Cover Letter AI)**:
+   - Detailed job view with required skills and metadata.
+   - **AI Cover Letter Generator**: Generates 3 tailored cover letter styles (*Short & Direct*, *Technical & Detailed*, *Product & Impact Focus*).
+   - **Quick Apply**: Saves job application directly to backend Kanban pipeline.
+4. **`/resumes` (PDF Parser & Profile Editor)**:
+   - PDF Resume Upload zone with drag & drop (`pdf-parse`).
+   - Structured JSON editor for position, grade, experience, english level, skills, and summary.
+   - Set primary candidate CV toggle.
+5. **`/applications` (Kanban Pipeline & Favorites)**:
+   - Track application stages (`applied`, `screening`, `interview`, `offer`, `rejected`).
+   - Manage application notes and bookmarked favorite jobs.
 
 ---
 
@@ -112,8 +79,6 @@ Run these commands from the root directory of the monorepo:
 - **Start Web App Only**: `yarn dev --filter=@hunter-ai/web`
 - **Start API Server Only**: `yarn dev --filter=@hunter-ai/api`
 - **Build Shared Types**: `yarn workspace @hunter-ai/types build`
-- **Type Check API Server**: `yarn workspace @hunter-ai/api type-check`
-- **Build API Server**: `yarn workspace @hunter-ai/api build`
 
 ---
 

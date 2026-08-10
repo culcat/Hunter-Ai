@@ -1,9 +1,12 @@
+import { Vacancy } from './vacancy';
+
 export type ApplicationStatus = 'applied' | 'screening' | 'interview' | 'offer' | 'rejected';
 
 export interface JobApplication {
   id: string;
   userId: string;
   vacancyId: string;
+  vacancy?: Vacancy;
   resumeId: string;
   status: ApplicationStatus;
   coverLetter?: string;
@@ -29,5 +32,6 @@ export interface UserFavorite {
   id: string;
   userId: string;
   vacancyId: string;
+  vacancy?: Vacancy;
   createdAt: string;
 }

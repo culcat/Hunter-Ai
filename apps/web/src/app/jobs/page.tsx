@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import {
   Row,
@@ -13,246 +13,378 @@ import {
   List,
   Typography,
   Space,
-  Avatar,
-  Breadcrumb,
-  Switch,
-  Slider,
+  Modal,
+  Drawer,
+  Form,
+  message,
+  Progress,
+  Divider,
 } from 'antd';
 import {
   SearchOutlined,
-  FilterOutlined,
   EnvironmentOutlined,
   ArrowRightOutlined,
+  PlusOutlined,
+  ThunderboltOutlined,
+  StarOutlined,
+  AimOutlined,
+  CheckCircleOutlined,
+  CloseCircleOutlined,
 } from '@ant-design/icons';
 import { Header } from '@/components/shared/Header/Header';
-import styles from './jobs.module.scss';
+import {
+  useGetVacanciesQuery,
+  useParseVacanciesMutation,
+  useGetResumesQuery,
+  useEvaluateMatchMutation,
+  useAddFavoriteMutation,
+} from '@/store/api/baseApi';
+import type { Vacancy, WorkFormat, GradeLevel, AiMatchResult } from '@hunter-ai/types';
 
 const { Title, Text, Paragraph } = Typography;
-
-const allJobs = [
-  {
-    id: '1',
-    title: 'Senior Full Stack Engineer (Next.js / NestJS)',
-    company: 'Stels Cloud Tech',
-    location: 'Remote (US/EU)',
-    salary: '$140,000 - $170,000',
-    type: 'Full-time',
-    matchScore: 96,
-    tags: ['React 19', 'Next.js', 'NestJS', 'TypeScript', 'SQLite'],
-    description: 'We are seeking an expert Full Stack Engineer to lead our next-gen developer platform built on Next.js 15, NestJS microservices, and TypeORM.',
-    posted: '2 hours ago',
-  },
-  {
-    id: '2',
-    title: 'Lead AI Applications Architect',
-    company: 'NeuralFlow Systems',
-    location: 'San Francisco, CA (Hybrid)',
-    salary: '$180,000 - $220,000',
-    type: 'Full-time',
-    matchScore: 92,
-    tags: ['Python', 'LangChain', 'TypeScript', 'Vector DB', 'Docker'],
-    description: 'Architect autonomous agent workflows and integration pipelines using Google Antigravity SDK and modern LLM orchestration.',
-    posted: '5 hours ago',
-  },
-  {
-    id: '3',
-    title: 'Principal Frontend Engineer',
-    company: 'Veloce Data',
-    location: 'Remote',
-    salary: '$150,000 - $185,000',
-    type: 'Full-time',
-    matchScore: 88,
-    tags: ['React', 'TypeScript', 'Ant Design', 'Redux Toolkit'],
-    description: 'Build enterprise-grade SaaS dashboards with high-performance UI rendering, SCSS modules, and RTK Query caching.',
-    posted: '1 day ago',
-  },
-  {
-    id: '4',
-    title: 'Backend Systems Engineer (NestJS / SQLite)',
-    company: 'Hunter Data Inc.',
-    location: 'Austin, TX (Remote)',
-    salary: '$130,000 - $160,000',
-    type: 'Contract',
-    matchScore: 85,
-    tags: ['NestJS', 'TypeORM', 'SQLite', 'Swagger', 'Jest'],
-    description: 'Develop high-throughput REST API services with DTO validation, TypeORM migrations, and automated OpenAPI documentation.',
-    posted: '2 days ago',
-  },
-];
+const { Option } = Select;
 
 export default function JobsPage() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedTech, setSelectedTech] = useState<string[]>([]);
-  const [remoteOnly, setRemoteOnly] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [workFormat, setWorkFormat] = useState<WorkFormat | undefined>(undefined);
+  const [grade, setGrade] = useState<GradeLevel | undefined>(undefined);
 
-  const filteredJobs = allJobs.filter((j) => {
-    const matchesSearch =
-      j.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      j.company.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesRemote = !remoteOnly || j.location.toLowerCase().includes('remote');
-    const matchesTech =
-      selectedTech.length === 0 || selectedTech.some((t) => j.tags.includes(t));
-    return matchesSearch && matchesRemote && matchesTech;
+  const { data: vacanciesData, isLoading, refetch } = useGetVacanciesQuery({
+    searchQuery: searchQuery || undefined,
+    workFormat,
+    grade,
   });
 
+  const { data: resumes } = useGetResumesQuery();
+  const [parseVacancies, { isLoading: isParsing }] = useParseVacanciesMutation();
+  const [evaluateMatch, { isLoading: isEvaluating }] = useEvaluateMatchMutation();
+  const [addFavorite] = useAddFavoriteMutation();
+
+  const [parseModalVisible, setParseModalVisible] = useState(false);
+  const [parseForm] = Form.useForm();
+
+  const [matchDrawerVacancy, setMatchDrawerVacancy] = useState<Vacancy | null>(null);
+  const [matchResult, setMatchResult] = useState<AiMatchResult | null>(null);
+  const [selectedResumeId, setSelectedResumeId] = useState<string>('');
+
+  const handleParseSubmit = async (values: any) => {
+    try {
+      await parseVacancies({
+        target: values.target,
+        source: values.source,
+      }).unwrap();
+      message.success('Vacancies parsed & ingested successfully!');
+      setParseModalVisible(false);
+      parseForm.resetFields();
+      refetch();
+    } catch (err: any) {
+      message.error(err?.data?.message || 'Failed to parse vacancies');
+    }
+  };
+
+  const handleEvaluateMatchClick = async (vacancy: Vacancy) => {
+    setMatchDrawerVacancy(vacancy);
+    const primaryResume = resumes?.find((r) => r.isPrimary) || resumes?.[0];
+    if (primaryResume) {
+      setSelectedResumeId(primaryResume.id);
+      runEvaluate(primaryResume.id, vacancy.id);
+    }
+  };
+
+  const runEvaluate = async (resumeId: string, vacancyId: string) => {
+    try {
+      const res = await evaluateMatch({ resumeId, vacancyId }).unwrap();
+      setMatchResult(res);
+    } catch (err: any) {
+      message.error(err?.data?.message || 'Failed to calculate AI match score');
+    }
+  };
+
+  const handleAddFav = async (vacancyId: string) => {
+    try {
+      await addFavorite(vacancyId).unwrap();
+      message.success('Added to favorites!');
+    } catch (err: any) {
+      message.error('Failed to add to favorites');
+    }
+  };
+
   return (
-    <div className={styles.pageContainer}>
+    <div style={{ minHeight: '100vh', background: '#0a0f1d', color: '#fff' }}>
       <Header />
 
-      <div className={styles.contentWrapper}>
-        <Breadcrumb
-          items={[
-            { title: <Link href="/">Dashboard</Link> },
-            { title: 'Search Jobs' },
-          ]}
-          className={styles.breadcrumbMargin}
-        />
-
-        {/* Page Title Header */}
-        <div className={styles.pageHeader}>
-          <Title level={2} className={styles.pageTitle}>
-            Career Opportunities & Match Scout
-          </Title>
-          <Paragraph type="secondary">
-            AI-matched engineering roles sorted by your technology stack compatibility.
-          </Paragraph>
-        </div>
-
-        <Row gutter={[24, 24]}>
-          {/* Filters Sidebar */}
-          <Col xs={24} md={7} lg={6}>
-            <Card
-              title={
-                <Space>
-                  <FilterOutlined className={styles.iconPrimary} />
-                  <span>Role Filters</span>
-                </Space>
-              }
-              className={styles.cardRounded}
-            >
-              <Space direction="vertical" size="large" style={{ width: '100%' }}>
-                <div>
-                  <Text strong className={styles.fieldLabel}>
-                    Search Keyword
-                  </Text>
-                  <Input
-                    placeholder="Role title or company..."
-                    prefix={<SearchOutlined />}
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    allowClear
-                  />
-                </div>
-
-                <div>
-                  <Text strong className={styles.fieldLabel}>
-                    Tech Stack Filter
-                  </Text>
-                  <Select
-                    mode="multiple"
-                    placeholder="Select technologies..."
-                    style={{ width: '100%' }}
-                    value={selectedTech}
-                    onChange={setSelectedTech}
-                    options={[
-                      { label: 'React 19', value: 'React 19' },
-                      { label: 'Next.js', value: 'Next.js' },
-                      { label: 'NestJS', value: 'NestJS' },
-                      { label: 'TypeScript', value: 'TypeScript' },
-                      { label: 'SQLite', value: 'SQLite' },
-                      { label: 'Python', value: 'Python' },
-                    ]}
-                  />
-                </div>
-
-                <div>
-                  <div className={styles.remoteSwitchRow}>
-                    <Text strong>Remote Roles Only</Text>
-                    <Switch checked={remoteOnly} onChange={setRemoteOnly} />
-                  </div>
-                </div>
-
-                <div>
-                  <Text strong className={styles.fieldLabel}>
-                    Min Salary Expectation
-                  </Text>
-                  <Slider defaultValue={120} min={80} max={250} step={10} tooltip={{ formatter: (v) => `$${v}k` }} />
-                </div>
-              </Space>
-            </Card>
-          </Col>
-
-          {/* Job Listings List */}
-          <Col xs={24} md={17} lg={18}>
-            <Card
-              title={
-                <Space>
-                  <span>Showing {filteredJobs.length} Matched Roles</span>
-                  <Tag color="blue">{selectedTech.length > 0 ? `${selectedTech.length} tech filters` : 'All Stack'}</Tag>
-                </Space>
-              }
-              className={styles.cardRounded}
-            >
-              <List
-                itemLayout="vertical"
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '32px 24px' }}>
+        <Space direction="vertical" size={24} style={{ width: '100%' }}>
+          <Row align="middle" justify="space-between">
+            <Col xs={24} md={16}>
+              <Title level={2} style={{ color: '#fff', margin: 0 }}>
+                AI Vacancy Search & Scraper
+              </Title>
+              <Paragraph style={{ color: '#94a3b8', fontSize: 16 }}>
+                Filter active software engineering roles or parse new postings from HeadHunter, Habr Career, GetMatch & corporate career sites.
+              </Paragraph>
+            </Col>
+            <Col xs={24} md={8} style={{ textAlign: 'right' }}>
+              <Button
+                type="primary"
                 size="large"
-                dataSource={filteredJobs}
-                renderItem={(item) => (
-                  <List.Item
-                    key={item.id}
-                    className={styles.listItem}
-                    extra={
-                      <Space direction="vertical" align="end" size="middle">
-                        <Tag color="green" className={styles.matchScoreTag}>
-                          {item.matchScore}% Match Score
-                        </Tag>
-                        <Text strong className={styles.salaryText}>
-                          {item.salary}
-                        </Text>
-                        <Link href={`/jobs/${item.id}`}>
-                          <Button type="primary" size="large" icon={<ArrowRightOutlined />}>
-                            View & Apply
-                          </Button>
-                        </Link>
+                icon={<PlusOutlined />}
+                onClick={() => setParseModalVisible(true)}
+              >
+                Parse New Vacancies
+              </Button>
+            </Col>
+          </Row>
+
+          {/* Filter Bar */}
+          <Card style={{ background: '#131b2e', borderColor: '#1e293b' }}>
+            <Row gutter={[16, 16]} align="middle">
+              <Col xs={24} md={10}>
+                <Input
+                  size="large"
+                  placeholder="Search position, company, or stack (e.g. React, NestJS)..."
+                  prefix={<SearchOutlined style={{ color: '#64748b' }} />}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </Col>
+              <Col xs={12} md={7}>
+                <Select
+                  size="large"
+                  style={{ width: '100%' }}
+                  placeholder="Work Format"
+                  allowClear
+                  value={workFormat}
+                  onChange={(val) => setWorkFormat(val)}
+                >
+                  <Option value="remote">Remote Work</Option>
+                  <Option value="office">Office</Option>
+                  <Option value="hybrid">Hybrid</Option>
+                </Select>
+              </Col>
+              <Col xs={12} md={7}>
+                <Select
+                  size="large"
+                  style={{ width: '100%' }}
+                  placeholder="Grade Level"
+                  allowClear
+                  value={grade}
+                  onChange={(val) => setGrade(val)}
+                >
+                  <Option value="Junior">Junior</Option>
+                  <Option value="Middle">Middle</Option>
+                  <Option value="Senior">Senior</Option>
+                  <Option value="Lead">Lead</Option>
+                </Select>
+              </Col>
+            </Row>
+          </Card>
+
+          {/* Vacancies List */}
+          <List
+            loading={isLoading}
+            dataSource={vacanciesData?.items || []}
+            renderItem={(item) => (
+              <Card
+                key={item.id}
+                style={{
+                  background: '#131b2e',
+                  borderColor: '#1e293b',
+                  marginBottom: 16,
+                }}
+              >
+                <Row align="middle" justify="space-between">
+                  <Col xs={24} md={16}>
+                    <Space direction="vertical" size={6}>
+                      <Space align="center" wrap>
+                        <Title level={4} style={{ color: '#fff', margin: 0 }}>
+                          <Link href={`/jobs/${item.id}`} style={{ color: '#f8fafc' }}>
+                            {item.title}
+                          </Link>
+                        </Title>
+                        <Tag color="blue">{item.source.toUpperCase()}</Tag>
+                        <Tag color="purple">{item.grade}</Tag>
+                        <Tag color="cyan">{item.workFormat.toUpperCase()}</Tag>
                       </Space>
-                    }
-                  >
-                    <List.Item.Meta
-                      avatar={<Avatar size={48} className={styles.avatarCompany}>{item.company[0]}</Avatar>}
-                      title={
-                        <Link href={`/jobs/${item.id}`} className={styles.roleTitleLink}>
-                          {item.title}
-                        </Link>
-                      }
-                      description={
-                        <Space size={16} className={styles.companyMetaRow}>
-                          <Text strong>{item.company}</Text>
-                          <Text type="secondary">
-                            <EnvironmentOutlined /> {item.location}
-                          </Text>
-                          <Tag color="default">{item.type}</Tag>
-                        </Space>
-                      }
-                    />
 
-                    <Paragraph type="secondary" className={styles.jobDescription}>
-                      {item.description}
-                    </Paragraph>
+                      <Text style={{ color: '#94a3b8' }}>
+                        Company: <strong style={{ color: '#cbd5e1' }}>{item.company}</strong> • Location: <EnvironmentOutlined /> {item.city || item.country || 'Remote'} • Salary: {item.salaryMin ? `${item.salaryMin.toLocaleString()} - ${item.salaryMax?.toLocaleString() || ''} ${item.currency}` : 'Salary not disclosed'}
+                      </Text>
 
+                      <Paragraph
+                        style={{ color: '#cbd5e1', margin: '4px 0' }}
+                        ellipsis={{ rows: 2 }}
+                      >
+                        {item.description}
+                      </Paragraph>
+
+                      <Space size={6} wrap style={{ marginTop: 6 }}>
+                        {(item.skills || []).map((tech) => (
+                          <Tag key={tech} color="geekblue">
+                            {tech}
+                          </Tag>
+                        ))}
+                      </Space>
+                    </Space>
+                  </Col>
+
+                  <Col xs={24} md={8} style={{ textAlign: 'right', marginTop: 16 }}>
+                    <Space direction="vertical" size={12} style={{ width: '100%', alignItems: 'flex-end' }}>
+                      <Space>
+                        <Button
+                          icon={<StarOutlined />}
+                          onClick={() => handleAddFav(item.id)}
+                        >
+                          Save
+                        </Button>
+                        <Button
+                          type="primary"
+                          icon={<AimOutlined />}
+                          onClick={() => handleEvaluateMatchClick(item)}
+                        >
+                          AI Match Score
+                        </Button>
+                      </Space>
+
+                      <Link href={`/jobs/${item.id}`}>
+                        <Button type="link" icon={<ArrowRightOutlined />}>
+                          View Details & Apply
+                        </Button>
+                      </Link>
+                    </Space>
+                  </Col>
+                </Row>
+              </Card>
+            )}
+          />
+        </Space>
+      </div>
+
+      {/* Modal: Parse Vacancies */}
+      <Modal
+        title="Parse Vacancies via Automated Scraper"
+        open={parseModalVisible}
+        onCancel={() => setParseModalVisible(false)}
+        onOk={() => parseForm.submit()}
+        confirmLoading={isParsing}
+        okText="Start Scraper"
+      >
+        <Form form={parseForm} layout="vertical" onFinish={handleParseSubmit}>
+          <Form.Item
+            name="target"
+            label="Target URL or Career Site Keyword"
+            rules={[{ required: true, message: 'Please enter target URL' }]}
+          >
+            <Input placeholder="https://hh.ru/vacancy/1234567 or corporate site URL" />
+          </Form.Item>
+
+          <Form.Item name="source" label="Source Parser Engine">
+            <Select placeholder="Auto-detect source">
+              <Option value="headhunter">HeadHunter (HH.ru API/HTML)</Option>
+              <Option value="habr">Habr Career Parser</Option>
+              <Option value="getmatch">GetMatch Parser</Option>
+              <Option value="custom">Playwright Browser Scraper (Corporate Portals)</Option>
+            </Select>
+          </Form.Item>
+        </Form>
+      </Modal>
+
+      {/* Drawer: AI Match Score Evaluation */}
+      <Drawer
+        title="AI Match Score Analysis"
+        placement="right"
+        width={500}
+        open={Boolean(matchDrawerVacancy)}
+        onClose={() => setMatchDrawerVacancy(null)}
+      >
+        {matchDrawerVacancy && (
+          <Space direction="vertical" size={20} style={{ width: '100%' }}>
+            <div>
+              <Title level={4} style={{ margin: 0 }}>
+                {matchDrawerVacancy.title}
+              </Title>
+              <Text type="secondary">{matchDrawerVacancy.company}</Text>
+            </div>
+
+            <div>
+              <Text strong style={{ display: 'block', marginBottom: 8 }}>
+                Select Candidate Resume:
+              </Text>
+              <Select
+                style={{ width: '100%' }}
+                value={selectedResumeId}
+                onChange={(val) => {
+                  setSelectedResumeId(val);
+                  runEvaluate(val, matchDrawerVacancy.id);
+                }}
+              >
+                {(resumes || []).map((r) => (
+                  <Option key={r.id} value={r.id}>
+                    {r.title} ({r.parsedData?.position}) {r.isPrimary ? '[PRIMARY]' : ''}
+                  </Option>
+                ))}
+              </Select>
+            </div>
+
+            {isEvaluating ? (
+              <Paragraph>Evaluating candidate alignment...</Paragraph>
+            ) : matchResult ? (
+              <Card style={{ background: '#0f172a', borderColor: '#1e293b' }}>
+                <div style={{ textAlign: 'center', marginBottom: 16 }}>
+                  <Progress
+                    type="dashboard"
+                    percent={matchResult.score}
+                    strokeColor={matchResult.score >= 70 ? '#10b981' : '#f59e0b'}
+                  />
+                  <Title level={4} style={{ color: '#f8fafc', margin: '8px 0' }}>
+                    {matchResult.score}% Compatibility Score
+                  </Title>
+                  <Text style={{ color: '#94a3b8' }}>{matchResult.recommendation}</Text>
+                </div>
+
+                <Divider style={{ borderColor: '#334155' }} />
+
+                <Title level={5} style={{ color: '#10b981' }}>
+                  <CheckCircleOutlined /> Key Strengths
+                </Title>
+                <List
+                  size="small"
+                  dataSource={matchResult.strengths}
+                  renderItem={(s) => <List.Item style={{ color: '#cbd5e1' }}>• {s}</List.Item>}
+                />
+
+                <Divider style={{ borderColor: '#334155' }} />
+
+                <Title level={5} style={{ color: '#ef4444' }}>
+                  <CloseCircleOutlined /> Areas for Improvement
+                </Title>
+                <List
+                  size="small"
+                  dataSource={matchResult.weaknesses}
+                  renderItem={(w) => <List.Item style={{ color: '#cbd5e1' }}>• {w}</List.Item>}
+                />
+
+                {matchResult.missingSkills.length > 0 && (
+                  <div style={{ marginTop: 12 }}>
+                    <Text strong style={{ color: '#f8fafc', display: 'block', marginBottom: 6 }}>
+                      Missing Required Skills:
+                    </Text>
                     <Space wrap>
-                      {item.tags.map((t) => (
-                        <Tag key={t} className={styles.techTag}>
-                          {t}
+                      {matchResult.missingSkills.map((sk) => (
+                        <Tag key={sk} color="red">
+                          {sk}
                         </Tag>
                       ))}
                     </Space>
-                  </List.Item>
+                  </div>
                 )}
-              />
-            </Card>
-          </Col>
-        </Row>
-      </div>
+              </Card>
+            ) : (
+              <Paragraph>Please select a resume to calculate score.</Paragraph>
+            )}
+          </Space>
+        )}
+      </Drawer>
     </div>
   );
 }
