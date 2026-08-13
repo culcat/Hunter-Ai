@@ -1,15 +1,19 @@
 @use '../../styles/variables.scss' as *;
 
 .pageContainer {
-  background-color: #0a0f1d;
+  background-color: var(--bg-dark);
+  background-image: 
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99, 102, 241, 0.12), transparent 70%),
+    radial-gradient(ellipse 40% 30% at 80% 80%, rgba(16, 185, 129, 0.08), transparent 70%);
   min-height: 100vh;
-  color: #fff;
+  color: var(--text-main);
 }
 
 .contentWrapper {
-  max-width: 1200px;
+  max-width: 1320px;
+  width: 100%;
   margin: 0 auto;
-  padding: 32px 24px;
+  padding: 36px 24px 64px 24px;
 }
 
 .fullWidthSpace {
@@ -17,13 +21,17 @@
 }
 
 .pageHeaderTitle {
-  color: #fff !important;
+  color: #ffffff !important;
+  font-size: 32px !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.03em !important;
   margin: 0 !important;
 }
 
 .pageHeaderSub {
-  color: #94a3b8 !important;
-  font-size: 16px;
+  color: var(--text-muted) !important;
+  font-size: 15px;
+  margin-top: 4px;
 }
 
 .tabTitle {
@@ -35,26 +43,38 @@
 }
 
 .appCard {
-  background: #131b2e;
-  border-color: #1e293b;
-  margin-bottom: 16px;
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 16px !important;
+  margin-bottom: 20px;
+  transition: var(--transition-smooth) !important;
+
+  &:hover {
+    border-color: var(--border-glow) !important;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+  }
 }
 
 .appTitle {
-  color: #fff !important;
+  color: #ffffff !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
   margin: 0 !important;
 }
 
 .metaText {
-  color: #94a3b8;
+  color: var(--text-muted);
+  font-size: 13px;
 }
 
 .highlightText {
-  color: #f8fafc;
+  color: #ffffff;
+  font-weight: 600;
 }
 
 .notesText {
-  color: #cbd5e1;
+  color: var(--text-muted);
   font-style: italic;
 }
 
@@ -64,5 +84,6 @@
 }
 
 .statusSelect {
-  width: 140px;
+  width: 150px;
 }
+

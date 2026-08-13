@@ -3,39 +3,79 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 32px;
-  height: 64px;
-  background: #0f172a;
-  border-bottom: 1px solid #1e293b;
+  height: 68px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-bottom: 1px solid var(--border-color);
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 
   .brand {
     display: flex;
     align-items: center;
     gap: 12px;
     cursor: pointer;
+    text-decoration: none;
+    transition: var(--transition-fast);
+
+    &:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
 
     .logo {
       font-size: 20px;
-      font-weight: 700;
-      color: #f8fafc;
-      letter-spacing: -0.02em;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.03em;
     }
 
     .badge {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      background: rgba(99, 102, 241, 0.15) !important;
+      border: 1px solid rgba(99, 102, 241, 0.3) !important;
+      color: #818cf8 !important;
+      border-radius: 6px !important;
+      padding: 2px 8px !important;
     }
   }
 
   .navMenu {
     border-bottom: none;
     flex: 1;
-    max-width: 520px;
-    margin: 0 32px;
+    max-width: 680px;
+    margin: 0 24px;
     background: transparent;
+
+    :global(.ant-menu-item) {
+      color: var(--text-muted) !important;
+      font-weight: 500;
+      border-radius: 8px;
+      margin: 0 4px !important;
+      transition: var(--transition-fast) !important;
+
+      &:hover {
+        color: var(--text-main) !important;
+        background: rgba(255, 255, 255, 0.05) !important;
+      }
+    }
+
+    :global(.ant-menu-item-selected) {
+      color: #ffffff !important;
+      background: rgba(99, 102, 241, 0.18) !important;
+      border-bottom: none !important;
+
+      &::after {
+        display: none !important;
+      }
+    }
   }
 
   .actions {
@@ -45,13 +85,14 @@
   }
 
   .avatarUser {
-    background-color: #3b82f6;
+    background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
+    box-shadow: 0 0 12px rgba(79, 70, 229, 0.4);
   }
 
   .userName {
-    font-weight: 500;
+    font-weight: 600;
     font-size: 14px;
-    color: #f8fafc;
+    color: var(--text-main);
   }
 }
 
@@ -59,3 +100,4 @@
   text-align: center;
   margin-top: 16px;
 }
+

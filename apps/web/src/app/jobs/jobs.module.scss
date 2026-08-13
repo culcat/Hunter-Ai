@@ -1,15 +1,19 @@
 @use '../../styles/variables.scss' as *;
 
 .pageContainer {
-  background-color: #0a0f1d;
+  background-color: var(--bg-dark);
+  background-image: 
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99, 102, 241, 0.12), transparent 70%),
+    radial-gradient(ellipse 40% 30% at 10% 90%, rgba(59, 130, 246, 0.08), transparent 70%);
   min-height: 100vh;
-  color: #fff;
+  color: var(--text-main);
 }
 
 .contentWrapper {
-  max-width: 1200px;
+  max-width: 1320px;
+  width: 100%;
   margin: 0 auto;
-  padding: 32px 24px;
+  padding: 36px 24px 64px 24px;
 }
 
 .fullWidthSpace {
@@ -17,13 +21,17 @@
 }
 
 .pageHeaderTitle {
-  color: #fff !important;
+  color: #ffffff !important;
+  font-size: 32px !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.03em !important;
   margin: 0 !important;
 }
 
 .pageHeaderSub {
-  color: #94a3b8 !important;
-  font-size: 16px;
+  color: var(--text-muted) !important;
+  font-size: 15px;
+  margin-top: 4px;
 }
 
 .rightCol {
@@ -41,8 +49,11 @@
 }
 
 .filterCard {
-  background: #131b2e;
-  border-color: #1e293b;
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  margin-bottom: 24px;
 }
 
 .fullWidthSelect {
@@ -50,47 +61,69 @@
 }
 
 .searchIcon {
-  color: #64748b;
+  color: var(--text-muted);
 }
 
 .vacancyCard {
-  background: #131b2e;
-  border-color: #1e293b;
-  margin-bottom: 16px;
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 16px !important;
+  margin-bottom: 20px;
+  transition: var(--transition-smooth) !important;
+
+  &:hover {
+    border-color: var(--border-glow) !important;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+  }
 }
 
 .vacancyTitle {
-  color: #fff !important;
+  color: #ffffff !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
   margin: 0 !important;
 }
 
 .vacancyTitleLink {
-  color: #f8fafc;
+  color: #ffffff;
+  transition: var(--transition-fast);
+
+  &:hover {
+    color: #60a5fa;
+  }
 }
 
 .vacancyMeta {
-  color: #94a3b8;
+  color: var(--text-muted);
+  font-size: 13px;
+  margin-top: 4px;
 }
 
 .companyHighlight {
-  color: #cbd5e1;
+  color: #e2e8f0;
+  font-weight: 600;
 }
 
 .vacancyDesc {
-  color: #cbd5e1 !important;
-  margin: 4px 0 !important;
+  color: var(--text-muted) !important;
+  font-size: 14px;
+  margin: 10px 0 !important;
+  line-height: 1.6;
 }
 
 .tagSpace {
-  margin-top: 6px;
+  margin-top: 10px;
 }
 
 .techTag {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  background: #1e293b;
-  border-color: #334155;
+  font-size: 11px;
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   color: #cbd5e1;
+  border-radius: 6px;
+  padding: 2px 8px;
 }
 
 .drawerContentSpace {
@@ -99,56 +132,69 @@
 
 .drawerTitle {
   margin: 0 !important;
+  color: #ffffff !important;
+  font-size: 20px !important;
+  font-weight: 800 !important;
 }
 
 .fieldLabelBlock {
   display: block;
   margin-bottom: 8px;
   font-weight: 600;
+  color: var(--text-main);
 }
 
 .fieldLabelBlockSm {
   display: block;
   margin-bottom: 6px;
-  color: #f8fafc;
+  color: var(--text-main);
   font-weight: 600;
 }
 
 .matchCard {
-  background: #0f172a;
-  border-color: #1e293b;
+  background: rgba(15, 23, 42, 0.9) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 16px !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .matchScoreHeader {
   text-align: center;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .matchScoreTitle {
-  color: #f8fafc !important;
-  margin: 8px 0 !important;
+  color: #ffffff !important;
+  font-size: 22px !important;
+  font-weight: 800 !important;
+  margin: 12px 0 4px 0 !important;
 }
 
 .matchScoreSub {
-  color: #94a3b8;
+  color: var(--text-muted);
+  font-size: 14px;
 }
 
 .dividerDark {
-  border-color: #334155 !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
 }
 
 .greenTitle {
   color: #10b981 !important;
+  font-weight: 700 !important;
 }
 
 .redTitle {
-  color: #ef4444 !important;
+  color: #f87171 !important;
+  font-weight: 700 !important;
 }
 
 .listItemText {
-  color: #cbd5e1 !important;
+  color: #e2e8f0 !important;
+  font-size: 14px;
 }
 
 .missingSkillsContainer {
-  margin-top: 12px;
+  margin-top: 14px;
 }
+

@@ -1,48 +1,58 @@
+@use '../../styles/variables.scss' as *;
+
 .settingsContainer {
+  background-color: var(--bg-dark);
+  background-image: 
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99, 102, 241, 0.12), transparent 70%),
+    radial-gradient(ellipse 40% 30% at 90% 10%, rgba(59, 130, 246, 0.08), transparent 70%);
   min-height: 100vh;
-  background-color: #0b0f19;
-  color: #f3f4f6;
+  color: var(--text-main);
 }
 
 .contentWrapper {
-  max-width: 1200px;
+  max-width: 1320px;
+  width: 100%;
   margin: 0 auto;
-  padding: 32px 24px;
+  padding: 36px 24px 64px 24px;
 }
 
 .heroCard {
   background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
   padding: 32px;
-  margin-bottom: 24px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  margin-bottom: 28px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
 }
 
 .heroBadge {
-  font-weight: 600;
-  letter-spacing: 0.05em;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   padding: 4px 12px;
   border-radius: 6px;
   font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
 }
 
 .heroTitle {
   color: #ffffff !important;
+  font-size: 28px !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.03em !important;
   margin-bottom: 8px !important;
-  font-weight: 700 !important;
 }
 
 .heroSubtitle {
-  color: #94a3b8 !important;
+  color: var(--text-muted) !important;
   font-size: 15px;
   margin-bottom: 0 !important;
 }
 
 .mainCard {
-  background: #111827;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 16px;
   padding: 24px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
@@ -50,7 +60,7 @@
 
 .platformBanner {
   background: rgba(30, 41, 59, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: 20px;
   margin-bottom: 24px;
@@ -61,8 +71,8 @@
 
 .platformTitle {
   font-size: 18px;
-  font-weight: 600;
-  color: #f8fafc;
+  font-weight: 700;
+  color: #ffffff;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -70,15 +80,15 @@
 
 .instructionAlert {
   background: rgba(59, 130, 246, 0.1);
-  border: 1px solid rgba(59, 130, 246, 0.2);
-  border-radius: 8px;
-  padding: 16px;
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  border-radius: 10px;
+  padding: 18px;
   margin-bottom: 24px;
   color: #93c5fd;
 }
 
 .instructionTitle {
-  font-weight: 600;
+  font-weight: 700;
   margin-bottom: 8px;
   color: #60a5fa;
 }
@@ -91,10 +101,10 @@
 }
 
 .codeHint {
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.4);
   padding: 2px 6px;
   border-radius: 4px;
-  font-family: monospace;
+  font-family: 'JetBrains Mono', monospace;
   color: #e2e8f0;
 }
 
@@ -103,10 +113,10 @@
 }
 
 .cookieTextarea {
-  font-family: monospace;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 13px;
-  background: #0f172a !important;
-  border-color: rgba(255, 255, 255, 0.15) !important;
+  background: rgba(15, 23, 42, 0.8) !important;
+  border-color: var(--border-color) !important;
   color: #38bdf8 !important;
   border-radius: 8px;
 }
@@ -124,10 +134,11 @@
 
 .statusSuccess {
   color: #4ade80;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .statusWarning {
   color: #fbbf24;
-  font-weight: 600;
+  font-weight: 700;
 }
+

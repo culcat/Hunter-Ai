@@ -82,6 +82,7 @@ export default function DashboardPage() {
                     size="large"
                     block
                     icon={<FilePdfOutlined />}
+                    className={styles.heroOutlineBtn}
                   >
                     Upload / Parse PDF Resume
                   </Button>

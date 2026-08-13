@@ -1,15 +1,19 @@
 @use '../../styles/variables.scss' as *;
 
 .pageContainer {
-  background-color: #0a0f1d;
+  background-color: var(--bg-dark);
+  background-image: 
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99, 102, 241, 0.12), transparent 70%),
+    radial-gradient(ellipse 40% 30% at 90% 90%, rgba(139, 92, 246, 0.08), transparent 70%);
   min-height: 100vh;
-  color: #fff;
+  color: var(--text-main);
 }
 
 .contentWrapper {
-  max-width: 1200px;
+  max-width: 1320px;
+  width: 100%;
   margin: 0 auto;
-  padding: 32px 24px;
+  padding: 36px 24px 64px 24px;
 }
 
 .fullWidthSpace {
@@ -17,78 +21,111 @@
 }
 
 .pageHeaderTitle {
-  color: #fff !important;
+  color: #ffffff !important;
+  font-size: 32px !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.03em !important;
   margin: 0 !important;
 }
 
 .pageHeaderSub {
-  color: #94a3b8 !important;
-  font-size: 16px;
+  color: var(--text-muted) !important;
+  font-size: 15px;
+  margin-top: 4px;
 }
 
 .uploadCard {
-  background: #131b2e;
-  border-color: #1e293b;
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 16px !important;
 }
 
 .draggerArea {
-  background: #0f172a !important;
-  border-color: #334155 !important;
-  padding: 24px !important;
+  background: rgba(15, 23, 42, 0.6) !important;
+  border: 2px dashed rgba(99, 102, 241, 0.3) !important;
+  border-radius: 12px !important;
+  padding: 28px !important;
+  transition: var(--transition-smooth) !important;
+
+  &:hover {
+    border-color: var(--primary-light) !important;
+    background: rgba(15, 23, 42, 0.8) !important;
+  }
 }
 
 .uploadIcon {
   font-size: 48px;
-  color: #3b82f6;
+  color: var(--primary-blue);
 }
 
 .uploadText {
-  color: #f8fafc !important;
+  color: #ffffff !important;
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .uploadHint {
-  color: #64748b !important;
+  color: var(--text-muted) !important;
 }
 
 .dividerDark {
-  border-color: #1e293b !important;
+  border-color: var(--border-color) !important;
 }
 
 .sectionTitle {
-  color: #fff !important;
+  color: #ffffff !important;
+  font-weight: 700;
 }
 
 .resumeCard {
-  background: #131b2e;
-  border-color: #1e293b;
-  margin-bottom: 16px;
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 16px !important;
+  margin-bottom: 20px;
+  transition: var(--transition-smooth) !important;
+
+  &:hover {
+    border-color: var(--border-glow) !important;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+  }
 }
 
 .resumeCardPrimary {
-  background: #131b2e;
-  border-color: #3b82f6;
-  margin-bottom: 16px;
+  background: var(--bg-card) !important;
+  border: 1px solid rgba(99, 102, 241, 0.4) !important;
+  border-radius: 16px !important;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 20px rgba(79, 70, 229, 0.15);
+  transition: var(--transition-smooth) !important;
+
+  &:hover {
+    border-color: var(--primary-light) !important;
+    transform: translateY(-2px);
+  }
 }
 
 .pdfIcon {
-  font-size: 32px;
-  color: #ef4444;
+  font-size: 36px;
+  color: #f87171;
 }
 
 .resumeTitle {
-  color: #fff !important;
+  color: #ffffff !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
   margin: 0 !important;
 }
 
 .resumeMeta {
-  color: #94a3b8;
+  color: var(--text-muted);
   display: block;
+  font-size: 13px;
 }
 
 .highlightText {
-  color: #f8fafc;
+  color: #ffffff;
+  font-weight: 600;
 }
 
 .skillGroup {
@@ -107,3 +144,4 @@
 .fullWidthInputNumber {
   width: 100%;
 }
+

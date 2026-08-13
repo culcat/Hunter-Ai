@@ -1,40 +1,71 @@
 @use '../styles/variables.scss' as *;
 
 .dashboardContainer {
-  background-color: #0a0f1d;
+  background-color: var(--bg-dark);
+  background-image: 
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99, 102, 241, 0.12), transparent 70%),
+    radial-gradient(ellipse 40% 30% at 90% 80%, rgba(59, 130, 246, 0.08), transparent 70%);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
 .contentWrapper {
-  max-width: 1280px;
+  max-width: 1320px;
+  width: 100%;
   margin: 0 auto;
-  padding: 32px 24px;
+  padding: 36px 24px 64px 24px;
 }
 
 .heroCard {
-  margin-bottom: 24px;
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  color: #ffffff;
-  border-radius: 12px;
-  border: 1px solid #1e293b;
+  margin-bottom: 28px;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 20px !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  padding: 12px;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: linear-gradient(180deg, #4f46e5 0%, #3b82f6 100%);
+  }
 }
 
 .heroBadge {
   font-family: 'JetBrains Mono', monospace;
-  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  background: rgba(59, 130, 246, 0.15) !important;
+  border: 1px solid rgba(59, 130, 246, 0.35) !important;
+  color: #60a5fa !important;
+  padding: 4px 10px !important;
+  border-radius: 6px !important;
 }
 
 .heroTitle {
   color: #ffffff !important;
-  margin: 0 !important;
+  font-size: 28px !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.03em !important;
+  margin: 8px 0 4px 0 !important;
 }
 
 .heroSubtitle {
-  color: #94a3b8 !important;
-  font-size: 16px;
+  color: var(--text-muted) !important;
+  font-size: 15px;
+  line-height: 1.6;
   margin: 0 !important;
+  max-width: 680px;
 }
 
 .heroActionCol {
@@ -47,115 +78,193 @@
 }
 
 .heroButton {
-  background-color: #3b82f6;
+  background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
+  border: none;
+  font-weight: 600;
+  height: 44px;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(79, 70, 229, 0.35);
+
+  &:hover {
+    background: linear-gradient(135deg, #6366f1 0%, #60a5fa 100%) !important;
+    transform: translateY(-1px);
+  }
+}
+
+.heroOutlineBtn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: var(--text-main) !important;
+  font-weight: 600;
+  height: 44px;
+  border-radius: 10px;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
+  }
 }
 
 .statsRow {
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 
 .statCard {
-  border-radius: 8px;
-  background: #131b2e;
-  border-color: #1e293b;
+  border-radius: 16px !important;
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-color) !important;
+  padding: 8px;
+  position: relative;
+  transition: var(--transition-smooth) !important;
+
+  &:hover {
+    border-color: var(--border-glow) !important;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+  }
 }
 
 .statTitle {
-  color: #94a3b8;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .statValue {
-  color: #f8fafc !important;
-  font-weight: 700;
+  :global(.ant-statistic-content-value) {
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    font-size: 28px !important;
+    letter-spacing: -0.02em;
+  }
 }
 
 .iconBlue {
   color: #3b82f6;
+  font-size: 22px;
 }
 
 .iconGreen {
   color: #10b981;
+  font-size: 22px;
 }
 
 .iconYellow {
-  color: #eab308;
+  color: #f59e0b;
+  font-size: 22px;
 }
 
 .iconPurple {
-  color: #a855f7;
-}
-
-.sectionCard {
-  background: #131b2e;
-  border-color: #1e293b;
+  color: #8b5cf6;
+  font-size: 22px;
 }
 
 .cardHeaderTitle {
-  color: #f8fafc;
-  font-weight: 600;
+  color: var(--text-main);
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: -0.01em;
 }
 
 .viewAllLink {
-  color: #3b82f6;
+  color: #60a5fa;
+  font-weight: 600;
+  font-size: 13px;
+  transition: var(--transition-fast);
+
+  &:hover {
+    color: #93c5fd;
+  }
 }
 
 .loadingSpinner {
   text-align: center;
-  padding: 40px 0;
+  padding: 48px 0;
 }
 
 .jobListItem {
-  border-bottom: 1px solid #1e293b !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  padding: 18px 16px !important;
+  border-radius: 12px;
+  transition: var(--transition-fast);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.03);
+  }
 }
 
 .companyAvatar {
-  background-color: #3b82f6;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  font-weight: 700;
+  border-radius: 10px;
 }
 
 .jobTitle {
   margin: 0 !important;
-  color: #f8fafc !important;
+  color: #ffffff !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
 }
 
 .jobMeta {
-  color: #94a3b8;
+  color: var(--text-muted);
+  font-size: 13px;
 }
 
 .companyText {
-  color: #cbd5e1;
+  color: #e2e8f0;
+  font-weight: 600;
 }
 
 .salaryText {
   color: #10b981;
-  font-weight: 600;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
 }
 
 .tagGroup {
-  margin-top: 8px;
+  margin-top: 10px;
 }
 
 .techTag {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  background: #1e293b;
-  border-color: #334155;
+  font-size: 11px;
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   color: #cbd5e1;
+  border-radius: 6px;
+  padding: 2px 8px;
+}
+
+.matchBadge {
+  background: rgba(16, 185, 129, 0.15) !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+  color: #34d399 !important;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  border-radius: 6px;
+  padding: 2px 8px;
 }
 
 .jobActionCol {
   text-align: right;
-  margin-top: 12px;
+  margin-top: 8px;
 }
 
 .profileTitle {
-  color: #f8fafc;
-  font-weight: 600;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 15px;
 }
 
 .profileDesc {
-  color: #cbd5e1;
+  color: var(--text-muted);
+  font-size: 13px;
 }
 
 .tagSpace {
-  margin-top: 8px;
+  margin-top: 10px;
 }
+

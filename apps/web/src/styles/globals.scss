@@ -1,5 +1,28 @@
 @use './variables.scss' as *;
 
+:root {
+  --bg-dark: #060913;
+  --bg-card: #0d1322;
+  --bg-card-hover: #131b2e;
+  --border-color: rgba(255, 255, 255, 0.08);
+  --border-glow: rgba(99, 102, 241, 0.25);
+
+  --primary: #4f46e5;
+  --primary-light: #6366f1;
+  --primary-blue: #3b82f6;
+
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-subtle: #64748b;
+
+  --glass-bg: rgba(13, 19, 34, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-blur: blur(16px);
+  --shadow-glow: 0 8px 32px rgba(79, 70, 229, 0.18);
+  --transition-fast: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -9,8 +32,77 @@
 html,
 body {
   font-family: $font-family;
-  background-color: $bg-dark;
-  color: $text-light;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
   min-height: 100vh;
   width: 100%;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 102, 241, 0.4);
+}
+
+/* Ant Design Dark Overrides */
+.ant-card {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 14px !important;
+  color: var(--text-main) !important;
+  transition: var(--transition-smooth) !important;
+}
+
+.ant-card-head {
+  border-bottom: 1px solid var(--border-color) !important;
+  color: var(--text-main) !important;
+}
+
+.ant-tag {
+  border-radius: 6px !important;
+  font-weight: 500 !important;
+}
+
+.ant-modal-content {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 16px !important;
+  color: var(--text-main) !important;
+}
+
+.ant-modal-header {
+  background: transparent !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+.ant-modal-title {
+  color: var(--text-main) !important;
+}
+
+.ant-drawer-content {
+  background: var(--bg-card) !important;
+  color: var(--text-main) !important;
+}
+
+.ant-drawer-header {
+  border-bottom: 1px solid var(--border-color) !important;
+  background: var(--bg-card) !important;
+}
+
+.ant-drawer-title {
+  color: var(--text-main) !important;
+}
+
